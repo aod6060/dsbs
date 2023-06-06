@@ -1,0 +1,7 @@
+# Derf's Simple Build System
+
+I'm in process of migrating from Window 7 to some sort of Linux Distro (Leaning On Linux Mint). However, there is a problem... I only know how to code in Visual Studios. Oh the humanity! I only know how to press button and recieve binary. What do I do... I need a build system that is similar to what VS2017 offers and here it is "Derf's Simple Build System (DSBS)." To configure this build system to make it work you can create a solution.json file (example in "test" directory).
+
+Unlike other build systems I'm not generating Makefiles because I don't like non standard formats. I decided to generate *.builder.json while like to solution file is just a simple json file. Note: I like json because its a simple format. That is also why I'm using json as apposed to Makefiles because I can read them. As you can see I'm using Makefile. This will be replaced once the build system is working so for now until I can start building with this little build system.
+
+Note: This is a "Work In Progress (WIP)" so most of the stuff isn't implemented yet. Right now I have d_solution application almost done then I'll move onto the d_builder which is akin to the Make command but for *.builder.json files. Got a bunch of work to do.
