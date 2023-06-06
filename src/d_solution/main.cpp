@@ -68,7 +68,7 @@ std::string exec(std::string cmd)
     return result;
 }
 
-bool solution_load(Solution *s);
+bool solution_load(std::string filePath, Solution *s);
 
 void generate_bref(Solution* s);
 
@@ -80,7 +80,13 @@ int main(int argc, char **argv)
 {
     Solution solution;
 
-    if(!solution_load(&solution)) {
+    std::string fileName = "solution.json";
+    
+    if(argc == 2) {
+        fileName = argv[1];
+    }
+
+    if(!solution_load(fileName, &solution)) {
         std::cout << "Error: Please create a solution.json file for your project!" << "\n";
         return -1;
     }
@@ -90,7 +96,7 @@ int main(int argc, char **argv)
 
     // Generate Builder Files
     generate_builder(&solution);
-    
+
     return 0;
 }
 
@@ -102,10 +108,10 @@ void json_value_iterator(Json::Value value, std::function<void(Json::Value)> cb)
     }
 }
 
-bool solution_load(Solution *s)
+bool solution_load(std::string fileName, Solution *s)
 {
     Json::Value root;
-    std::ifstream in("solution.json");
+    std::ifstream in(fileName);
 
     if(!in.is_open()) {
         return false;
