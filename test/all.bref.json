@@ -1,0 +1,8 @@
+{
+	"ref" : 
+	[
+		"hello.builder.json"
+	],
+	"type" : "bref",
+	"version" : 1
+}

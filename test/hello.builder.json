@@ -1,0 +1,18 @@
+{
+	"bin-dir" : "./bin",
+	"compiler" : "g++",
+	"extensions" : ".cpp",
+	"include-dirs" : [],
+	"lib-dirs" : [],
+	"libs" : [],
+	"name" : "hello",
+	"obj-dir" : "./obj/hello",
+	"options" : [],
+	"source-files" : 
+	[
+		"main.cpp"
+	],
+	"src-dir" : "./src/hello",
+	"type" : "builder",
+	"version" : 1
+}
