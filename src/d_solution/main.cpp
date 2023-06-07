@@ -39,35 +39,6 @@ struct Solution
     std::vector<Project> projects;
 };
 
-// I'll keep this and port it to windows
-// https://www.tutorialspoint.com/How-to-execute-a-command-and-get-the-output-of-command-within-Cplusplus-using-POSIX
-std::string exec(std::string cmd)
-{
-    char buffer[128];
-    std::string result;
-
-    // windows _popen
-    FILE *pipe = popen(cmd.c_str(), "r");
-
-    if (!pipe)
-    {
-        return "popen failed";
-    }
-
-    while (!feof(pipe))
-    {
-        if (fgets(buffer, 128, pipe) != nullptr)
-        {
-            result += buffer;
-        }
-    }
-
-    // _pclose windows
-    pclose(pipe);
-
-    return result;
-}
-
 bool solution_load(std::string filePath, Solution *s);
 
 void generate_bref(Solution* s);
@@ -189,6 +160,8 @@ void generate_bref(Solution* s) {
     root["type"] = "bref";
     root["version"] = 1;
 
+    root["ref"] = Json::Value(Json::arrayValue);
+    
     for(int i = 0; i < s->projects.size(); i++) {
         std::stringstream ss;
 
