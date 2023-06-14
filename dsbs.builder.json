@@ -1,0 +1,30 @@
+{
+	"bin-dir" : "./bin",
+	"compiler" : "g++",
+	"extensions" : ".cpp",
+	"include-dirs" : 
+	[
+		"./include"
+	],
+	"lib-dirs" : 
+	[
+		"./lib"
+	],
+	"libs" : 
+	[
+		"jsoncpp"
+	],
+	"name" : "dsbs",
+	"obj-dir" : "./obj/dsbs",
+	"options" : 
+	[
+		"-std=c++17"
+	],
+	"source-files" : 
+	[
+		"main.cpp"
+	],
+	"src-dir" : "./src/dsbs",
+	"type" : "builder",
+	"version" : 1
+}

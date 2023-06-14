@@ -1,0 +1,30 @@
+{
+	"bin-dir" : "./bin",
+	"compiler" : "g++",
+	"extensions" : ".cpp",
+	"include-dirs" : 
+	[
+		"./include"
+	],
+	"lib-dirs" : 
+	[
+		"./lib"
+	],
+	"libs" : 
+	[
+		"jsoncpp"
+	],
+	"name" : "d_builder",
+	"obj-dir" : "./obj/d_builder",
+	"options" : 
+	[
+		"-std=c++17"
+	],
+	"source-files" : 
+	[
+		"main.cpp"
+	],
+	"src-dir" : "./src/d_builder",
+	"type" : "builder",
+	"version" : 1
+}
