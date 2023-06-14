@@ -223,6 +223,10 @@ void build_builder(Builder* builder) {
         idss << "-I" << ip << " ";
     });
 
+    std::stringstream option_ss;
+    std::for_each(builder->options.begin(), builder->options.end(), [&](std::string o) {
+        option_ss << o << " ";
+    });
 
     std::vector<std::string> obj_files;
 
@@ -251,7 +255,8 @@ void build_builder(Builder* builder) {
         ss << builder->compiler << " "
            << "-c " << builder->src_dir << "/" << src << " "
            << "-o " << builder->obj_dir << "/" << obj << " "
-           << idss.str();
+           << idss.str() << " "
+           << option_ss.str();
 
         std::cout << exec(ss.str()) << std::endl;
 
