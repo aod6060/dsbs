@@ -128,6 +128,9 @@ namespace be {
         };
     }
 
+
+    int buildSourceObjectList(core::Operation op, std::string projectName, core::solution::Solution& solution);
+
     int loadSolutionProfile(core::Operation op, std::string solutionFile, std::string projectName) {
 
         // Load Solution
@@ -135,9 +138,17 @@ namespace be {
 
         util::loadStream(solutionFile, loadSolution(solution));
 
-        //// Load Profile
-        //core::profile::Profile profile;
-        
+        return buildSourceObjectList(op, projectName, solution);
+    }
+
+    int buildSourceObjectList(core::Operation op, std::string projectName, core::solution::Solution& solution) {
+        if(!projectName.empty()) {
+            // This means that I'm only focus on a single project
+        } else {
+            // This means that I'm focusing on the entire solution
+
+            
+        }
 
         return 0;
     }
