@@ -1,0 +1,25 @@
+{
+    "type": "solution",
+    "version": 2,
+    "name": "hello",
+    "projects": {
+        "name": "hello",
+        "type": "executable",
+        "profile": "./dsbs-config/profile/g++.profile.json",
+        "bin-dir": "./bin",
+        "sources": [
+            {
+                "src-dir": "./src/hello",
+                "obj-dir": "./obj/hello"
+            }
+        ],
+        "include-dirs": [],
+        "lib-dirs": [],
+        "libs": [],
+        "compiler-options": [
+            "-std=c++17"
+        ],
+        "archiver-options": [],
+        "linker-options": []
+    }
+}
