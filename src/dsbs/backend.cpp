@@ -128,7 +128,6 @@ namespace be {
         };
     }
 
-
     int buildSourceObjectList(core::Operation op, std::string projectName, core::solution::Solution& solution);
 
     int loadSolutionProfile(core::Operation op, std::string solutionFile, std::string projectName) {
@@ -141,15 +140,109 @@ namespace be {
         return buildSourceObjectList(op, projectName, solution);
     }
 
+    int createCommandList(core::Operation op, core::solution::Solution& solution, std::vector<core::solution::Source>& sourceList, std::vector<std::string>& objectList);
+
     int buildSourceObjectList(core::Operation op, std::string projectName, core::solution::Solution& solution) {
+        std::vector<core::solution::Source> sourceList;
+        std::vector<std::string> objectList;
+
         if(!projectName.empty()) {
-            // This means that I'm only focus on a single project
+            core::solution::Project* project = nullptr;
+
+            std::for_each(solution.projects.begin(), solution.projects.end(), [&](core::solution::Project& p) {
+                if(p.name == projectName) {
+                    project = &p;
+                }
+            });
+
+            if(project != nullptr) {
+                std::for_each(project->sources.begin(), project->sources.end(), [&](core::solution::Source& s) {
+                    util::iterateDirectory(std::filesystem::path(s.srcDir), 
+                    [&](std::filesystem::directory_entry e) 
+                    {
+                        std::for_each(project->profile.fileExtensions.sourceFileExtensions.begin(), project->profile.fileExtensions.sourceFileExtensions.end(), [&](std::string ext) {
+                            if(e.path().extension() == ext) {
+                                //std::cout << e.path().string() << "\n";
+                                core::solution::Source source;
+                                source.srcDir = e.path().string();
+                                std::vector<std::string> args;
+                                std::string fileName = e.path().filename().string();
+                                util::strSplit(fileName, '.', [&](std::string line) {
+                                    args.push_back(line);
+                                });
+                                std::stringstream ss;
+                                ss << s.objDir << args[0] << project->profile.fileExtensions.objectFileExtension;
+                                source.objDir = ss.str();
+
+                                sourceList.push_back(source);
+                                objectList.push_back(source.objDir);
+
+                                args.clear();
+                            }
+                        });
+                    });
+                });
+            } else {
+                std::cout << "Error: This project " << projectName << " doesn't exist!" << "\n";
+                return -1;
+            }
         } else {
             // This means that I'm focusing on the entire solution
+            std::for_each(solution.projects.begin(), solution.projects.end(), [&](core::solution::Project& project) {
+                std::for_each(project.sources.begin(), project.sources.end(), [&](core::solution::Source& s) {
+                    util::iterateDirectory(std::filesystem::path(s.srcDir), 
+                    [&](std::filesystem::directory_entry e) 
+                    {
+                        std::for_each(project.profile.fileExtensions.sourceFileExtensions.begin(), project.profile.fileExtensions.sourceFileExtensions.end(), [&](std::string ext) {
+                            if(e.path().extension() == ext) {
+                                //std::cout << e.path().string() << "\n";
+                                core::solution::Source source;
+                                source.srcDir = e.path().string();
+                                std::vector<std::string> args;
+                                std::string fileName = e.path().filename().string();
+                                util::strSplit(fileName, '.', [&](std::string line) {
+                                    args.push_back(line);
+                                });
+                                std::stringstream ss;
+                                ss << s.objDir << args[0] << project.profile.fileExtensions.objectFileExtension;
+                                source.objDir = ss.str();
 
-            
+                                sourceList.push_back(source);
+                                objectList.push_back(source.objDir);
+
+                                args.clear();
+                            }
+                        });
+                    });
+                });
+            });
         }
 
+        return createCommandList(op, solution, sourceList, objectList);
+    }
+
+    int createBuildCommandList(core::solution::Solution& solution, std::vector<core::solution::Source>& sourceList, std::vector<std::string>& objectList);
+
+    int createCleanCommandList(core::solution::Solution& solution, std::vector<std::string>& objectList);
+
+    int createCommandList(
+        core::Operation op, 
+        core::solution::Solution& solution, 
+        std::vector<core::solution::Source>& sourceList, 
+        std::vector<std::string>& objectList) {
+        if(op == core::Operation::OP_BUILD) {
+            return createBuildCommandList(solution, sourceList, objectList);
+        } else if(op == core::Operation::OP_CLEAN) {
+            return createCleanCommandList(solution, objectList);
+        }
+    }
+
+    int createBuildCommandList(core::solution::Solution& solution, std::vector<core::solution::Source>& sourceList, std::vector<std::string>& objectList) {
         return 0;
     }
+
+    int createCleanCommandList(core::solution::Solution& solution, std::vector<std::string>& objectList) {
+        return 0;
+    }
+
 }

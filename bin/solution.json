@@ -10,8 +10,8 @@
             "bin-dir": "./bin",
             "sources": [
                 {
-                    "src-dir": "./src/hello",
-                    "obj-dir": "./obj/hello"
+                    "src-dir": "./src/hello/",
+                    "obj-dir": "./obj/hello/"
                 }
             ],
             "include-dirs": [],

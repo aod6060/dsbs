@@ -62,4 +62,11 @@ namespace util {
             return core::solution::ProjectType::PT_UNKNOWN;
         }
     }
+
+
+    void iterateDirectory(std::filesystem::path path, std::function<void(std::filesystem::directory_entry)> cb) {
+        for(const std::filesystem::directory_entry& e : std::filesystem::directory_iterator{path}) {
+            cb(e);
+        }
+    }
 }

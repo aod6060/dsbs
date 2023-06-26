@@ -129,6 +129,7 @@ namespace util
 
     core::solution::ProjectType toType(std::string type);
 
+    void iterateDirectory(std::filesystem::path path, std::function<void(std::filesystem::directory_entry)> cb);
 }
 
 namespace fe
