@@ -4,14 +4,14 @@
     "name": "hello",
     "projects": [
         {
-            "name": "hello",
-            "type": "executable",
+            "name": "libtest_static",
+            "type": "static",
             "profile": "./dsbs-config/profile/g++.profile.json",
             "bin-dir": "./bin/",
             "sources": [
                 {
-                    "src-dir": "./src/hello/",
-                    "obj-dir": "./obj/hello/"
+                    "src-dir": "./src/libtest_static/",
+                    "obj-dir": "./obj/libtest_static/"
                 }
             ],
             "include-dirs": [],
@@ -22,6 +22,55 @@
             ],
             "archiver-options": [],
             "linker-options": []
+        },
+        {
+            "name": "libtest_shared",
+            "type": "shared",
+            "profile": "./dsbs-config/profile/g++.profile.json",
+            "bin-dir": "./bin/",
+            "sources": [
+                {
+                    "src-dir": "./src/libtest_shared/",
+                    "obj-dir": "./obj/libtest_shared/"
+                }
+            ],
+            "include-dirs": [],
+            "lib-dirs": [],
+            "libs": [],
+            "compiler-options": [
+                "-std=c++17"
+            ],
+            "archiver-options": [],
+            "linker-options": []
+        },
+        {
+            "name": "hello",
+            "type": "executable",
+            "profile": "./dsbs-config/profile/g++.profile.json",
+            "bin-dir": "./bin/",
+            "sources": [
+                {
+                    "src-dir": "./src/hello/",
+                    "obj-dir": "./obj/hello/"
+                }
+            ],
+            "include-dirs": [
+                "./src/libtest_static/",
+                "./src/libtest_shared/"
+            ],
+            "lib-dirs": [
+                "./bin/"
+            ],
+            "libs": [
+                "test_static",
+                "test_shared"
+            ],
+            "compiler-options": [
+                "-std=c++17"
+            ],
+            "archiver-options": [],
+            "linker-options": [
+            ]
         }
     ]
 }

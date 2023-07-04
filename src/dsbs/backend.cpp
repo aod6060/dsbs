@@ -49,10 +49,12 @@ namespace be {
             // Flags
             profile.flags.includeDirFlag = root["flags"]["include-dir-flag"].asString();
             profile.flags.libDirFlag = root["flags"]["lib-dir-flag"].asString();
+            profile.flags.libFlags = root["flags"]["lib-flag"].asString();
             profile.flags.compileFlag = root["flags"]["compile-flag"].asString();
             profile.flags.objectFlag = root["flags"]["object-flag"].asString();
             profile.flags.staticLibFlags = root["flags"]["static-lib-flag"].asString();
             profile.flags.sharedLibFlags = root["flags"]["shared-lib-flag"].asString();
+            profile.flags.sharedLibFlagsLinker = root["flags"]["shared-lib-flag-linker"].asString();
 
         };
     }
@@ -159,7 +161,7 @@ namespace be {
     int executeCommandList(std::vector<core::command>& commandList);
 
     int buildOperation(std::string projectName, core::solution::Solution& solution) {
-        std::cout << "Building..." << "\n";
+        //std::cout << "Building..." << "\n";
 
         std::vector<core::command> commandList;
 
@@ -169,7 +171,7 @@ namespace be {
 
             std::for_each(solution.projects.begin(), solution.projects.end(), [&](core::solution::Project& project) {
                 // Grab sources
-                std::cout << project.name << "\n";
+                std::cout << "Building: " << project.name << "\n";
 
                 std::vector<std::string> objects;
 
@@ -247,7 +249,7 @@ namespace be {
 
                     // Create Binary
                     cb << project.profile.flags.objectFlag << " ";
-                    cb << project.binDir << project.name << " ";
+                    cb << project.binDir << project.name << project.profile.fileExtensions.binaryFileExtension << " ";
 
                     // Link Libraries
                     // Library Dirs
@@ -272,9 +274,56 @@ namespace be {
                     commandList.push_back(c);
 
                 } else if(project.type == core::solution::ProjectType::PT_STATIC_LIB) {
+                    std::stringstream cb;
 
+                    // ar [options] [archive-name] [objects]
+                    cb << project.profile.programs.archiver << " ";
+                    cb << project.profile.flags.staticLibFlags << " ";
+                    cb << project.binDir << project.name << project.profile.fileExtensions.staticLibExtension << " ";
+                    // Adding in objects
+                    std::for_each(objects.begin(), objects.end(), [&](std::string o) {
+                        cb << o << " ";
+                    });
+                    core::command c;
+                    c.command = cb.str();
+                    c.projectName = project.name;
+                    commandList.push_back(c);
                 } else if(project.type == core::solution::ProjectType::PT_SHARED_LIB) {
+                    std::stringstream cb;
 
+                    cb << project.profile.programs.linker << " ";
+                    cb << project.profile.flags.sharedLibFlagsLinker << " ";
+
+                    // Adding in objects
+                    std::for_each(objects.begin(), objects.end(), [&](std::string o) {
+                        cb << o << " ";
+                    });
+
+                    // Create Binary
+                    cb << project.profile.flags.objectFlag << " ";
+                    cb << project.binDir << project.name << project.profile.fileExtensions.sharedLibExtension << " ";
+
+                    // Link Libraries
+                    // Library Dirs
+                    std::for_each(project.libDirs.begin(), project.libDirs.end(), [&](std::string s) {
+                        cb << project.profile.flags.libDirFlag << s << " ";
+                    });
+
+                    // Libraries
+                    std::for_each(project.libs.begin(), project.libs.end(), [&](std::string s) {
+                        cb << project.profile.flags.libFlags << s << " ";
+                    });
+
+                    // Linker Options
+                    std::for_each(project.linkerOptions.begin(), project.linkerOptions.end(), [&](std::string s) {
+                        cb << s << " ";
+                    });
+
+                    core::command c;
+                    c.command = cb.str();
+                    c.projectName = project.name;
+
+                    commandList.push_back(c);
                 }
 
             });

@@ -19,9 +19,11 @@
     "flags": {
         "include-dir-flag": "-I",
         "lib-dir-flag": "-L",
+        "lib-flag": "-l",
         "compile-flag": "-c",
         "object-flag": "-o",
         "static-lib-flag": "-rcs",
-        "shared-lib-flag": "-fPIC"
+        "shared-lib-flag": "-fPIC",
+        "shared-lib-flag-linker": "-shared"
     }
 }

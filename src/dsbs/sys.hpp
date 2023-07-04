@@ -61,6 +61,7 @@ namespace core {
             std::string libFlags;
             std::string staticLibFlags;
             std::string sharedLibFlags;
+            std::string sharedLibFlagsLinker;
         };
 
         struct Profile
