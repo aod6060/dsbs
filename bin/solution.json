@@ -7,7 +7,7 @@
             "name": "hello",
             "type": "executable",
             "profile": "./dsbs-config/profile/g++.profile.json",
-            "bin-dir": "./bin",
+            "bin-dir": "./bin/",
             "sources": [
                 {
                     "src-dir": "./src/hello/",

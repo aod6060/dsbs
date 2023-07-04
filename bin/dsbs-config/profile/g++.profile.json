@@ -21,7 +21,7 @@
         "lib-dir-flag": "-L",
         "compile-flag": "-c",
         "object-flag": "-o",
-        "static-lib-flag": "rcs",
+        "static-lib-flag": "-rcs",
         "shared-lib-flag": "-fPIC"
     }
 }

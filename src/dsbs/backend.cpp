@@ -128,7 +128,9 @@ namespace be {
         };
     }
 
-    int buildSourceObjectList(core::Operation op, std::string projectName, core::solution::Solution& solution);
+    //int buildSourceObjectList(core::Operation op, std::string projectName, core::solution::Solution& solution);
+
+    int operationsCheck(core::Operation op, std::string projectName, core::solution::Solution& solution);
 
     int loadSolutionProfile(core::Operation op, std::string solutionFile, std::string projectName) {
 
@@ -137,111 +139,165 @@ namespace be {
 
         util::loadStream(solutionFile, loadSolution(solution));
 
-        return buildSourceObjectList(op, projectName, solution);
+        //return buildSourceObjectList(op, projectName, solution);
+        return operationsCheck(op, projectName, solution);
     }
 
-    int createCommandList(core::Operation op, core::solution::Solution& solution, std::vector<core::solution::Source>& sourceList, std::vector<std::string>& objectList);
+    int buildOperation(std::string projectName, core::solution::Solution& solution);
+    int cleanOperation(std::string projectName, core::solution::Solution& solution);
 
-    int buildSourceObjectList(core::Operation op, std::string projectName, core::solution::Solution& solution) {
-        std::vector<core::solution::Source> sourceList;
-        std::vector<std::string> objectList;
+    int operationsCheck(core::Operation op, std::string projectName, core::solution::Solution& solution) {
+        if(op == core::Operation::OP_BUILD) {
+            return buildOperation(projectName, solution);
+        } else if(op == core::Operation::OP_CLEAN) {
+            return cleanOperation(projectName, solution);
+        }
+        std::cout << "Error: The operation needs to be either \"build\" or \"clean\"" << "\n";
+        return -1;
+    }
+
+    int executeCommandList(std::vector<core::command>& commandList);
+
+    int buildOperation(std::string projectName, core::solution::Solution& solution) {
+        std::cout << "Building..." << "\n";
+
+        std::vector<core::command> commandList;
 
         if(!projectName.empty()) {
-            core::solution::Project* project = nullptr;
-
-            std::for_each(solution.projects.begin(), solution.projects.end(), [&](core::solution::Project& p) {
-                if(p.name == projectName) {
-                    project = &p;
-                }
-            });
-
-            if(project != nullptr) {
-                std::for_each(project->sources.begin(), project->sources.end(), [&](core::solution::Source& s) {
-                    util::iterateDirectory(std::filesystem::path(s.srcDir), 
-                    [&](std::filesystem::directory_entry e) 
-                    {
-                        std::for_each(project->profile.fileExtensions.sourceFileExtensions.begin(), project->profile.fileExtensions.sourceFileExtensions.end(), [&](std::string ext) {
-                            if(e.path().extension() == ext) {
-                                //std::cout << e.path().string() << "\n";
-                                core::solution::Source source;
-                                source.srcDir = e.path().string();
-                                std::vector<std::string> args;
-                                std::string fileName = e.path().filename().string();
-                                util::strSplit(fileName, '.', [&](std::string line) {
-                                    args.push_back(line);
-                                });
-                                std::stringstream ss;
-                                ss << s.objDir << args[0] << project->profile.fileExtensions.objectFileExtension;
-                                source.objDir = ss.str();
-
-                                sourceList.push_back(source);
-                                objectList.push_back(source.objDir);
-
-                                args.clear();
-                            }
-                        });
-                    });
-                });
-            } else {
-                std::cout << "Error: This project " << projectName << " doesn't exist!" << "\n";
-                return -1;
-            }
+            std::cout << "TODO: Create single project build" << "\n";
         } else {
-            // This means that I'm focusing on the entire solution
+
             std::for_each(solution.projects.begin(), solution.projects.end(), [&](core::solution::Project& project) {
-                std::for_each(project.sources.begin(), project.sources.end(), [&](core::solution::Source& s) {
-                    util::iterateDirectory(std::filesystem::path(s.srcDir), 
-                    [&](std::filesystem::directory_entry e) 
-                    {
-                        std::for_each(project.profile.fileExtensions.sourceFileExtensions.begin(), project.profile.fileExtensions.sourceFileExtensions.end(), [&](std::string ext) {
-                            if(e.path().extension() == ext) {
-                                //std::cout << e.path().string() << "\n";
-                                core::solution::Source source;
-                                source.srcDir = e.path().string();
-                                std::vector<std::string> args;
-                                std::string fileName = e.path().filename().string();
-                                util::strSplit(fileName, '.', [&](std::string line) {
-                                    args.push_back(line);
-                                });
-                                std::stringstream ss;
-                                ss << s.objDir << args[0] << project.profile.fileExtensions.objectFileExtension;
-                                source.objDir = ss.str();
+                // Grab sources
+                std::cout << project.name << "\n";
 
-                                sourceList.push_back(source);
-                                objectList.push_back(source.objDir);
+                std::vector<std::string> objects;
 
-                                args.clear();
+                std::for_each(project.sources.begin(), project.sources.end(), [&](core::solution::Source& source) {
+
+                    
+
+                    // Iterate through directory and searching for correct source files
+                    util::iterateDirectory(std::filesystem::path(source.srcDir), [&](std::filesystem::directory_entry entry) {
+                        //std::cout << entry.path().string() << "\n";
+                        std::for_each(
+                            project.profile.fileExtensions.sourceFileExtensions.begin(),
+                            project.profile.fileExtensions.sourceFileExtensions.end(),
+                            [&](std::string ext) {
+                                if(ext == entry.path().extension()) {
+                                    //std::cout << entry.path().string() << "\n";
+                                    core::solution::Source pairs;
+                                    pairs.srcDir = entry.path().string();
+
+                                    std::string temp = entry.path().filename().string();
+                                    std::vector<std::string> args;
+
+                                    util::strSplit(temp, '.', [&](std::string s) {
+                                        args.push_back(s);
+                                    });
+
+                                    std::stringstream ss;
+                                    ss << source.objDir << args[0] << project.profile.fileExtensions.objectFileExtension;
+
+                                    pairs.objDir = ss.str();
+
+                                    objects.push_back(pairs.objDir);
+
+                                    //std::cout << pairs.srcDir << " -> " << pairs.objDir << "\n";
+                                    // Build Command
+                                    std::stringstream command;
+                                    command << project.profile.programs.compiler << " ";
+                                    if(project.type == core::solution::ProjectType::PT_SHARED_LIB) {
+                                        command << project.profile.flags.sharedLibFlags << " ";
+                                    }
+                                    command << project.profile.flags.compileFlag << " ";
+                                    command << pairs.srcDir << " ";
+                                    command << project.profile.flags.objectFlag << " ";
+                                    command << pairs.objDir << " ";
+                                    // Includes
+                                    std::for_each(project.includeDirs.begin(), project.includeDirs.end(), [&](std::string inc) {
+                                        command << project.profile.flags.includeDirFlag << inc << " ";
+                                    });
+                                    // Compiler Options
+                                    std::for_each(project.compilerOptions.begin(), project.compilerOptions.end(), [&](std::string option) {
+                                        command << option << " ";
+                                    });
+
+                                    //commandList.push_back(command.str());
+                                    core::command c;
+                                    c.command = command.str();
+                                    c.projectName = project.name;
+                                    commandList.push_back(c);
+                                }
                             }
-                        });
-                    });
+                        );
+                    });                    
                 });
+
+                // Build Project Command
+                if(project.type == core::solution::ProjectType::PT_EXECUTABLE) {
+                    std::stringstream cb;
+
+                    cb << project.profile.programs.linker << " ";
+                    
+                    // Adding in objects
+                    std::for_each(objects.begin(), objects.end(), [&](std::string o) {
+                        cb << o << " ";
+                    });
+
+                    // Create Binary
+                    cb << project.profile.flags.objectFlag << " ";
+                    cb << project.binDir << project.name << " ";
+
+                    // Link Libraries
+                    // Library Dirs
+                    std::for_each(project.libDirs.begin(), project.libDirs.end(), [&](std::string s) {
+                        cb << project.profile.flags.libDirFlag << s << " ";
+                    });
+
+                    // Libraries
+                    std::for_each(project.libs.begin(), project.libs.end(), [&](std::string s) {
+                        cb << project.profile.flags.libFlags << s << " ";
+                    });
+
+                    // Linker Options
+                    std::for_each(project.linkerOptions.begin(), project.linkerOptions.end(), [&](std::string s) {
+                        cb << s << " ";
+                    });
+
+                    core::command c;
+                    c.command = cb.str();
+                    c.projectName = project.name;
+
+                    commandList.push_back(c);
+
+                } else if(project.type == core::solution::ProjectType::PT_STATIC_LIB) {
+
+                } else if(project.type == core::solution::ProjectType::PT_SHARED_LIB) {
+
+                }
+
             });
         }
 
-        return createCommandList(op, solution, sourceList, objectList);
+        return executeCommandList(commandList);
     }
 
-    int createBuildCommandList(core::solution::Solution& solution, std::vector<core::solution::Source>& sourceList, std::vector<std::string>& objectList);
+    int executeCommandList(std::vector<core::command>& commandList) {
+        std::for_each(commandList.begin(), commandList.end(), [&](core::command& command) {
+            std::cout << "["<<command.projectName<<"] -> " << command.command << "\n";
+            // Execute command with some sort of system level api call.
+            std::string output = util::exec(command.command);
+            if(!output.empty()) {
+                std::cout << output << "\n";
+            }
+        });
 
-    int createCleanCommandList(core::solution::Solution& solution, std::vector<std::string>& objectList);
-
-    int createCommandList(
-        core::Operation op, 
-        core::solution::Solution& solution, 
-        std::vector<core::solution::Source>& sourceList, 
-        std::vector<std::string>& objectList) {
-        if(op == core::Operation::OP_BUILD) {
-            return createBuildCommandList(solution, sourceList, objectList);
-        } else if(op == core::Operation::OP_CLEAN) {
-            return createCleanCommandList(solution, objectList);
-        }
-    }
-
-    int createBuildCommandList(core::solution::Solution& solution, std::vector<core::solution::Source>& sourceList, std::vector<std::string>& objectList) {
         return 0;
     }
 
-    int createCleanCommandList(core::solution::Solution& solution, std::vector<std::string>& objectList) {
+    int cleanOperation(std::string projectName, core::solution::Solution& solution) {
+        std::cout << "Cleaning..." << "\n";
         return 0;
     }
 

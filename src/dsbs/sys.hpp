@@ -21,12 +21,16 @@
 #define SOLUTION_FILE_VERSION 2
 #define PROFILE_FILE_VERSION 1
 
-namespace core
-{
+namespace core {
     enum Operation
     {
         OP_BUILD = 0,
         OP_CLEAN
+    };
+
+    struct command {
+        std::string projectName;
+        std::string command;
     };
 
     namespace profile
@@ -116,8 +120,7 @@ namespace core
     }
 }
 
-namespace util
-{
+namespace util {
     void strSplit(std::string str, char delim, std::function<void(std::string)> cb);
     void loadFile(std::string path, std::function<void(std::string)> cb);
 
@@ -130,15 +133,15 @@ namespace util
     core::solution::ProjectType toType(std::string type);
 
     void iterateDirectory(std::filesystem::path path, std::function<void(std::filesystem::directory_entry)> cb);
+
+    std::string exec(std::string cmd);
 }
 
-namespace fe
-{
+namespace fe {
     int run(int argc, char **argv);
 }
 
-namespace be
-{
+namespace be {
     int run(core::Operation op, std::string solutionFile, std::string projectName);
 }
 
