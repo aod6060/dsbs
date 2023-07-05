@@ -544,15 +544,16 @@ namespace be {
         std::vector<std::filesystem::path> paths;
 
         if(!projectName.empty()) {
-
-        } else {
             std::for_each(solution.projects.begin(), solution.projects.end(), [&](core::solution::Project& project) {
-                // Scan through objects
-                std::for_each(project.sources.begin(), project.sources.end(), [&](core::solution::Source& source) {
-                    util::iterateDirectory(source.objDir, [&](std::filesystem::directory_entry entry) {
-                        if(entry.path().extension() == project.profile.fileExtensions.objectFileExtension) {
-                            paths.push_back(entry.path());
-                        }
+
+                if(projectName == project.name) {
+                    // Scan through objects
+                    std::for_each(project.sources.begin(), project.sources.end(), [&](core::solution::Source& source) {
+                        util::iterateDirectory(source.objDir, [&](std::filesystem::directory_entry entry) {
+                            if(entry.path().extension() == project.profile.fileExtensions.objectFileExtension) {
+                                paths.push_back(entry.path());
+                            }
+                        });
                     });
 
                     if(project.type == core::solution::ProjectType::PT_EXECUTABLE) {
@@ -565,7 +566,30 @@ namespace be {
                         cb << project.binDir << project.name << project.profile.fileExtensions.staticLibExtension;
                         paths.push_back(std::filesystem::path(cb.str()));
                     }
+
+                }
+            });
+        } else {
+            std::for_each(solution.projects.begin(), solution.projects.end(), [&](core::solution::Project& project) {
+                // Scan through objects
+                std::for_each(project.sources.begin(), project.sources.end(), [&](core::solution::Source& source) {
+                    util::iterateDirectory(source.objDir, [&](std::filesystem::directory_entry entry) {
+                        if(entry.path().extension() == project.profile.fileExtensions.objectFileExtension) {
+                            paths.push_back(entry.path());
+                        }
+                    });
                 });
+
+                if(project.type == core::solution::ProjectType::PT_EXECUTABLE) {
+                    std::stringstream cb;
+                    cb << project.binDir << project.name << project.profile.fileExtensions.binaryFileExtension;
+                    paths.push_back(std::filesystem::path(cb.str()));
+
+                } else if(project.type == core::solution::ProjectType::PT_SHARED_LIB || project.type == core::solution::ProjectType::PT_STATIC_LIB) {
+                    std::stringstream cb;
+                    cb << project.binDir << project.name << project.profile.fileExtensions.staticLibExtension;
+                    paths.push_back(std::filesystem::path(cb.str()));
+                }
             });
         }
 
