@@ -4,7 +4,9 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "${workspaceFolder}/include/"
+                "${workspaceFolder}/include/",
+                "${workspaceFolder}/bin/src/libtest_shared/",
+                "${workspaceFolder}/bin/src/libtest_static/"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",
