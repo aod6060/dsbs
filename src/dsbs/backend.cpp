@@ -289,6 +289,24 @@ namespace be {
                     c.projectName = project.name;
                     commandList.push_back(c);
                 } else if(project.type == core::solution::ProjectType::PT_SHARED_LIB) {
+
+                    std::cout << "TODO: Currently dsbs doesn't support shared but will in a future update. " << "\n";
+                    
+                    std::stringstream cb;
+
+                    // ar [options] [archive-name] [objects]
+                    cb << project.profile.programs.archiver << " ";
+                    cb << project.profile.flags.staticLibFlags << " ";
+                    cb << project.binDir << project.name << project.profile.fileExtensions.staticLibExtension << " ";
+                    // Adding in objects
+                    std::for_each(objects.begin(), objects.end(), [&](std::string o) {
+                        cb << o << " ";
+                    });
+                    core::command c;
+                    c.command = cb.str();
+                    c.projectName = project.name;
+                    commandList.push_back(c);
+                    /*
                     std::stringstream cb;
 
                     cb << project.profile.programs.linker << " ";
@@ -324,6 +342,7 @@ namespace be {
                     c.projectName = project.name;
 
                     commandList.push_back(c);
+                    */
                 }
 
             });
