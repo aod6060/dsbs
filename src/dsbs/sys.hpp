@@ -17,7 +17,7 @@
 
 #include <json/json.h>
 
-#define DSBS_VERSION "1.0.0"
+#define DSBS_VERSION "1.0.1"
 #define SOLUTION_FILE_VERSION 2
 #define PROFILE_FILE_VERSION 1
 
