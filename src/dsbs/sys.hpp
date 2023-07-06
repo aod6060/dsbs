@@ -28,10 +28,12 @@ namespace core {
         OP_CLEAN
     };
 
-    struct command {
-        std::string projectName;
-        std::string command;
-    };
+    namespace command {
+        struct Command {
+            std::string projectName;
+            std::string command;
+        };
+    }
 
     namespace profile
     {

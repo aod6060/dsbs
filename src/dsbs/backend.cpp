@@ -158,12 +158,12 @@ namespace be {
         return -1;
     }
 
-    int executeCommandList(std::vector<core::command>& commandList);
+    int executeCommandList(std::vector<core::command::Command>& commandList);
 
     int buildOperation(std::string projectName, core::solution::Solution& solution) {
         //std::cout << "Building..." << "\n";
 
-        std::vector<core::command> commandList;
+        std::vector<core::command::Command> commandList;
 
         if(!projectName.empty()) {
             std::for_each(solution.projects.begin(), solution.projects.end(), [&](core::solution::Project& project) {
@@ -224,7 +224,7 @@ namespace be {
                                         });
 
                                         //commandList.push_back(command.str());
-                                        core::command c;
+                                        core::command::Command c;
                                         c.command = command.str();
                                         c.projectName = project.name;
                                         commandList.push_back(c);
@@ -265,7 +265,7 @@ namespace be {
                             cb << s << " ";
                         });
 
-                        core::command c;
+                        core::command::Command c;
                         c.command = cb.str();
                         c.projectName = project.name;
 
@@ -282,7 +282,7 @@ namespace be {
                         std::for_each(objects.begin(), objects.end(), [&](std::string o) {
                             cb << o << " ";
                         });
-                        core::command c;
+                        core::command::Command c;
                         c.command = cb.str();
                         c.projectName = project.name;
                         commandList.push_back(c);
@@ -300,7 +300,7 @@ namespace be {
                         std::for_each(objects.begin(), objects.end(), [&](std::string o) {
                             cb << o << " ";
                         });
-                        core::command c;
+                        core::command::Command c;
                         c.command = cb.str();
                         c.projectName = project.name;
                         commandList.push_back(c);
@@ -402,7 +402,7 @@ namespace be {
                                     });
 
                                     //commandList.push_back(command.str());
-                                    core::command c;
+                                    core::command::Command c;
                                     c.command = command.str();
                                     c.projectName = project.name;
                                     commandList.push_back(c);
@@ -443,7 +443,7 @@ namespace be {
                         cb << s << " ";
                     });
 
-                    core::command c;
+                    core::command::Command c;
                     c.command = cb.str();
                     c.projectName = project.name;
 
@@ -460,7 +460,7 @@ namespace be {
                     std::for_each(objects.begin(), objects.end(), [&](std::string o) {
                         cb << o << " ";
                     });
-                    core::command c;
+                    core::command::Command c;
                     c.command = cb.str();
                     c.projectName = project.name;
                     commandList.push_back(c);
@@ -478,7 +478,7 @@ namespace be {
                     std::for_each(objects.begin(), objects.end(), [&](std::string o) {
                         cb << o << " ";
                     });
-                    core::command c;
+                    core::command::Command c;
                     c.command = cb.str();
                     c.projectName = project.name;
                     commandList.push_back(c);
@@ -527,8 +527,8 @@ namespace be {
         return executeCommandList(commandList);
     }
 
-    int executeCommandList(std::vector<core::command>& commandList) {
-        std::for_each(commandList.begin(), commandList.end(), [&](core::command& command) {
+    int executeCommandList(std::vector<core::command::Command>& commandList) {
+        std::for_each(commandList.begin(), commandList.end(), [&](core::command::Command& command) {
             std::cout << "["<<command.projectName<<"] -> " << command.command << "\n";
             // Execute command with some sort of system level api call.
             std::string output = util::exec(command.command);
