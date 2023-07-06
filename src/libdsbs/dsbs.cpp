@@ -1,20 +1,20 @@
-#include "sys.hpp"
+#include <dsbs/dsbs_internal.hpp>
 
-namespace be {
+namespace dsbs {
 
 
     /*
         Creating Backend... This is were the magic will begin...
     */
 
-    int loadSolutionProfile(core::Operation op, std::string solutionFile, std::string projectName);
+    int loadSolutionProfile(Operation op, std::string solutionFile, std::string projectName);
 
-    int run(core::Operation op, std::string solutionFile, std::string projectName) {
+    int run(Operation op, std::string solutionFile, std::string projectName) {
         //std::cout << ((op == core::OP_BUILD) ? "build" : "cleaning") << " " << solutionFile << " " << projectName << "\n";
         return loadSolutionProfile(op, solutionFile, projectName);
     }
 
-    std::function<void(std::ifstream&)> loadProfile(core::profile::Profile& profile) {
+    std::function<void(std::ifstream&)> loadProfile(profile::Profile& profile) {
         return [&](std::ifstream& in) {
             Json::Value root;
             in >> root;
@@ -38,7 +38,7 @@ namespace be {
 
             // File Extensions
             // Source File Extensions
-            util::jsonIteratorString(root["file-extensions"]["source-file-extensions"], [&](std::string ext) {
+            ::util::jsonIteratorString(root["file-extensions"]["source-file-extensions"], [&](std::string ext) {
                 profile.fileExtensions.sourceFileExtensions.push_back(ext);
             });
             profile.fileExtensions.objectFileExtension = root["file-extensions"]["object-file-extension"].asString();
@@ -59,7 +59,7 @@ namespace be {
         };
     }
 
-    std::function<void(std::ifstream&)> loadSolution(core::solution::Solution& solution) {
+    std::function<void(std::ifstream&)> loadSolution(solution::Solution& solution) {
         return [&](std::ifstream& in) {
             Json::Value root;
             in >> root;
@@ -79,48 +79,48 @@ namespace be {
 
 
 
-            util::jsonIterator(root["projects"], [&](Json::Value v) {
+            ::util::jsonIterator(root["projects"], [&](Json::Value v) {
 
-                core::solution::Project project;
+                solution::Project project;
 
                 project.name = v["name"].asString();
-                project.type = util::toType(v["type"].asString());
+                project.type = ::util::toType(v["type"].asString());
                 //project.profile = v["profile"].asString();
                 // Handle Profile
-                util::loadStream(v["profile"].asString(), loadProfile(project.profile));
+                ::util::loadStream(v["profile"].asString(), loadProfile(project.profile));
 
 
                 // Directories
                 project.binDir = v["bin-dir"].asString();
 
-                util::jsonIterator(v["sources"], [&](Json::Value v2) {
-                    core::solution::Source source;
+                ::util::jsonIterator(v["sources"], [&](Json::Value v2) {
+                    solution::Source source;
                     source.srcDir = v2["src-dir"].asString();
                     source.objDir = v2["obj-dir"].asString();
                     project.sources.push_back(source);
                 });
 
-                util::jsonIteratorString(v["include-dirs"], [&](std::string str) {
+                ::util::jsonIteratorString(v["include-dirs"], [&](std::string str) {
                     project.includeDirs.push_back(str);
                 });
 
-                util::jsonIteratorString(v["lib-dirs"], [&](std::string str) {
+                ::util::jsonIteratorString(v["lib-dirs"], [&](std::string str) {
                     project.libDirs.push_back(str);
                 });
 
-                util::jsonIteratorString(v["libs"], [&](std::string str) {
+                ::util::jsonIteratorString(v["libs"], [&](std::string str) {
                     project.libs.push_back(str);
                 });
                 // Options
-                util::jsonIteratorString(v["compiler-options"], [&](std::string str) {
+                ::util::jsonIteratorString(v["compiler-options"], [&](std::string str) {
                     project.compilerOptions.push_back(str);
                 });
 
-                util::jsonIteratorString(v["archiver-options"], [&](std::string str) {
+                ::util::jsonIteratorString(v["archiver-options"], [&](std::string str) {
                     project.archiverOptions.push_back(str);
                 });
 
-                util::jsonIteratorString(v["linker-options"], [&](std::string str) {
+                ::util::jsonIteratorString(v["linker-options"], [&](std::string str) {
                     project.linkerOptions.push_back(str);
                 });
 
@@ -132,53 +132,53 @@ namespace be {
 
     //int buildSourceObjectList(core::Operation op, std::string projectName, core::solution::Solution& solution);
 
-    int operationsCheck(core::Operation op, std::string projectName, core::solution::Solution& solution);
+    int operationsCheck(Operation op, std::string projectName, solution::Solution& solution);
 
-    int loadSolutionProfile(core::Operation op, std::string solutionFile, std::string projectName) {
+    int loadSolutionProfile(Operation op, std::string solutionFile, std::string projectName) {
 
         // Load Solution
-        core::solution::Solution solution;
+        solution::Solution solution;
 
-        util::loadStream(solutionFile, loadSolution(solution));
+        ::util::loadStream(solutionFile, loadSolution(solution));
 
         //return buildSourceObjectList(op, projectName, solution);
         return operationsCheck(op, projectName, solution);
     }
 
-    int buildOperation(std::string projectName, core::solution::Solution& solution);
-    int cleanOperation(std::string projectName, core::solution::Solution& solution);
+    int buildOperation(std::string projectName, solution::Solution& solution);
+    int cleanOperation(std::string projectName, solution::Solution& solution);
 
-    int operationsCheck(core::Operation op, std::string projectName, core::solution::Solution& solution) {
-        if(op == core::Operation::OP_BUILD) {
+    int operationsCheck(Operation op, std::string projectName, solution::Solution& solution) {
+        if(op == Operation::OP_BUILD) {
             return buildOperation(projectName, solution);
-        } else if(op == core::Operation::OP_CLEAN) {
+        } else if(op == Operation::OP_CLEAN) {
             return cleanOperation(projectName, solution);
         }
         std::cout << "Error: The operation needs to be either \"build\" or \"clean\"" << "\n";
         return -1;
     }
 
-    int executeCommandList(std::vector<core::command::Command>& commandList);
+    int executeCommandList(std::vector<command::Command>& commandList);
 
-    int buildOperation(std::string projectName, core::solution::Solution& solution) {
+    int buildOperation(std::string projectName, solution::Solution& solution) {
         //std::cout << "Building..." << "\n";
 
-        std::vector<core::command::Command> commandList;
+        std::vector<command::Command> commandList;
 
         if(!projectName.empty()) {
-            std::for_each(solution.projects.begin(), solution.projects.end(), [&](core::solution::Project& project) {
+            std::for_each(solution.projects.begin(), solution.projects.end(), [&](solution::Project& project) {
                 if(project.name == projectName) {
                     // Grab sources
                     std::cout << "Building: " << project.name << "\n";
 
                     std::vector<std::string> objects;
 
-                    std::for_each(project.sources.begin(), project.sources.end(), [&](core::solution::Source& source) {
+                    std::for_each(project.sources.begin(), project.sources.end(), [&](solution::Source& source) {
 
                         
 
                         // Iterate through directory and searching for correct source files
-                        util::iterateDirectory(std::filesystem::path(source.srcDir), [&](std::filesystem::directory_entry entry) {
+                        ::util::iterateDirectory(std::filesystem::path(source.srcDir), [&](std::filesystem::directory_entry entry) {
                             //std::cout << entry.path().string() << "\n";
                             std::for_each(
                                 project.profile.fileExtensions.sourceFileExtensions.begin(),
@@ -186,7 +186,7 @@ namespace be {
                                 [&](std::string ext) {
                                     if(ext == entry.path().extension()) {
                                         //std::cout << entry.path().string() << "\n";
-                                        core::solution::Source pairs;
+                                        solution::Source pairs;
                                         pairs.srcDir = entry.path().string();
 
                                         std::string temp = entry.path().filename().string();
@@ -207,7 +207,7 @@ namespace be {
                                         // Build Command
                                         std::stringstream command;
                                         command << project.profile.programs.compiler << " ";
-                                        if(project.type == core::solution::ProjectType::PT_SHARED_LIB) {
+                                        if(project.type == solution::ProjectType::PT_SHARED_LIB) {
                                             //command << project.profile.flags.sharedLibFlags << " ";
                                         }
                                         command << project.profile.flags.compileFlag << " ";
@@ -224,7 +224,7 @@ namespace be {
                                         });
 
                                         //commandList.push_back(command.str());
-                                        core::command::Command c;
+                                        command::Command c;
                                         c.command = command.str();
                                         c.projectName = project.name;
                                         commandList.push_back(c);
@@ -235,7 +235,7 @@ namespace be {
                     });
 
                     // Build Project Command
-                    if(project.type == core::solution::ProjectType::PT_EXECUTABLE) {
+                    if(project.type == solution::ProjectType::PT_EXECUTABLE) {
                         std::stringstream cb;
 
                         cb << project.profile.programs.linker << " ";
@@ -265,13 +265,13 @@ namespace be {
                             cb << s << " ";
                         });
 
-                        core::command::Command c;
+                        command::Command c;
                         c.command = cb.str();
                         c.projectName = project.name;
 
                         commandList.push_back(c);
 
-                    } else if(project.type == core::solution::ProjectType::PT_STATIC_LIB) {
+                    } else if(project.type == solution::ProjectType::PT_STATIC_LIB) {
                         std::stringstream cb;
 
                         // ar [options] [archive-name] [objects]
@@ -282,11 +282,11 @@ namespace be {
                         std::for_each(objects.begin(), objects.end(), [&](std::string o) {
                             cb << o << " ";
                         });
-                        core::command::Command c;
+                        command::Command c;
                         c.command = cb.str();
                         c.projectName = project.name;
                         commandList.push_back(c);
-                    } else if(project.type == core::solution::ProjectType::PT_SHARED_LIB) {
+                    } else if(project.type == solution::ProjectType::PT_SHARED_LIB) {
 
                         std::cout << "TODO: Currently dsbs doesn't support shared but will in a future update. " << "\n";
                         
@@ -300,7 +300,7 @@ namespace be {
                         std::for_each(objects.begin(), objects.end(), [&](std::string o) {
                             cb << o << " ";
                         });
-                        core::command::Command c;
+                        command::Command c;
                         c.command = cb.str();
                         c.projectName = project.name;
                         commandList.push_back(c);
@@ -345,18 +345,18 @@ namespace be {
                 }
             });
         } else {
-            std::for_each(solution.projects.begin(), solution.projects.end(), [&](core::solution::Project& project) {
+            std::for_each(solution.projects.begin(), solution.projects.end(), [&](solution::Project& project) {
                 // Grab sources
                 std::cout << "Building: " << project.name << "\n";
 
                 std::vector<std::string> objects;
 
-                std::for_each(project.sources.begin(), project.sources.end(), [&](core::solution::Source& source) {
+                std::for_each(project.sources.begin(), project.sources.end(), [&](solution::Source& source) {
 
                     
 
                     // Iterate through directory and searching for correct source files
-                    util::iterateDirectory(std::filesystem::path(source.srcDir), [&](std::filesystem::directory_entry entry) {
+                    ::util::iterateDirectory(std::filesystem::path(source.srcDir), [&](std::filesystem::directory_entry entry) {
                         //std::cout << entry.path().string() << "\n";
                         std::for_each(
                             project.profile.fileExtensions.sourceFileExtensions.begin(),
@@ -364,7 +364,7 @@ namespace be {
                             [&](std::string ext) {
                                 if(ext == entry.path().extension()) {
                                     //std::cout << entry.path().string() << "\n";
-                                    core::solution::Source pairs;
+                                    solution::Source pairs;
                                     pairs.srcDir = entry.path().string();
 
                                     std::string temp = entry.path().filename().string();
@@ -385,7 +385,7 @@ namespace be {
                                     // Build Command
                                     std::stringstream command;
                                     command << project.profile.programs.compiler << " ";
-                                    if(project.type == core::solution::ProjectType::PT_SHARED_LIB) {
+                                    if(project.type == solution::ProjectType::PT_SHARED_LIB) {
                                         //command << project.profile.flags.sharedLibFlags << " ";
                                     }
                                     command << project.profile.flags.compileFlag << " ";
@@ -402,7 +402,7 @@ namespace be {
                                     });
 
                                     //commandList.push_back(command.str());
-                                    core::command::Command c;
+                                    command::Command c;
                                     c.command = command.str();
                                     c.projectName = project.name;
                                     commandList.push_back(c);
@@ -413,7 +413,7 @@ namespace be {
                 });
 
                 // Build Project Command
-                if(project.type == core::solution::ProjectType::PT_EXECUTABLE) {
+                if(project.type == solution::ProjectType::PT_EXECUTABLE) {
                     std::stringstream cb;
 
                     cb << project.profile.programs.linker << " ";
@@ -443,13 +443,13 @@ namespace be {
                         cb << s << " ";
                     });
 
-                    core::command::Command c;
+                    command::Command c;
                     c.command = cb.str();
                     c.projectName = project.name;
 
                     commandList.push_back(c);
 
-                } else if(project.type == core::solution::ProjectType::PT_STATIC_LIB) {
+                } else if(project.type == solution::ProjectType::PT_STATIC_LIB) {
                     std::stringstream cb;
 
                     // ar [options] [archive-name] [objects]
@@ -460,11 +460,11 @@ namespace be {
                     std::for_each(objects.begin(), objects.end(), [&](std::string o) {
                         cb << o << " ";
                     });
-                    core::command::Command c;
+                    command::Command c;
                     c.command = cb.str();
                     c.projectName = project.name;
                     commandList.push_back(c);
-                } else if(project.type == core::solution::ProjectType::PT_SHARED_LIB) {
+                } else if(project.type == solution::ProjectType::PT_SHARED_LIB) {
 
                     std::cout << "TODO: Currently dsbs doesn't support shared but will in a future update. " << "\n";
 
@@ -478,7 +478,7 @@ namespace be {
                     std::for_each(objects.begin(), objects.end(), [&](std::string o) {
                         cb << o << " ";
                     });
-                    core::command::Command c;
+                    command::Command c;
                     c.command = cb.str();
                     c.projectName = project.name;
                     commandList.push_back(c);
@@ -527,11 +527,11 @@ namespace be {
         return executeCommandList(commandList);
     }
 
-    int executeCommandList(std::vector<core::command::Command>& commandList) {
-        std::for_each(commandList.begin(), commandList.end(), [&](core::command::Command& command) {
+    int executeCommandList(std::vector<command::Command>& commandList) {
+        std::for_each(commandList.begin(), commandList.end(), [&](command::Command& command) {
             std::cout << "["<<command.projectName<<"] -> " << command.command << "\n";
             // Execute command with some sort of system level api call.
-            std::string output = util::exec(command.command);
+            std::string output = ::util::exec(command.command);
             if(!output.empty()) {
                 std::cout << output << "\n";
             }
@@ -540,28 +540,28 @@ namespace be {
         return 0;
     }
 
-    int cleanOperation(std::string projectName, core::solution::Solution& solution) {
+    int cleanOperation(std::string projectName, solution::Solution& solution) {
         std::vector<std::filesystem::path> paths;
 
         if(!projectName.empty()) {
-            std::for_each(solution.projects.begin(), solution.projects.end(), [&](core::solution::Project& project) {
+            std::for_each(solution.projects.begin(), solution.projects.end(), [&](solution::Project& project) {
 
                 if(projectName == project.name) {
                     // Scan through objects
-                    std::for_each(project.sources.begin(), project.sources.end(), [&](core::solution::Source& source) {
-                        util::iterateDirectory(source.objDir, [&](std::filesystem::directory_entry entry) {
+                    std::for_each(project.sources.begin(), project.sources.end(), [&](solution::Source& source) {
+                        ::util::iterateDirectory(source.objDir, [&](std::filesystem::directory_entry entry) {
                             if(entry.path().extension() == project.profile.fileExtensions.objectFileExtension) {
                                 paths.push_back(entry.path());
                             }
                         });
                     });
 
-                    if(project.type == core::solution::ProjectType::PT_EXECUTABLE) {
+                    if(project.type == solution::ProjectType::PT_EXECUTABLE) {
                         std::stringstream cb;
                         cb << project.binDir << project.name << project.profile.fileExtensions.binaryFileExtension;
                         paths.push_back(std::filesystem::path(cb.str()));
 
-                    } else if(project.type == core::solution::ProjectType::PT_SHARED_LIB || project.type == core::solution::ProjectType::PT_STATIC_LIB) {
+                    } else if(project.type == solution::ProjectType::PT_SHARED_LIB || project.type == solution::ProjectType::PT_STATIC_LIB) {
                         std::stringstream cb;
                         cb << project.binDir << project.name << project.profile.fileExtensions.staticLibExtension;
                         paths.push_back(std::filesystem::path(cb.str()));
@@ -570,22 +570,22 @@ namespace be {
                 }
             });
         } else {
-            std::for_each(solution.projects.begin(), solution.projects.end(), [&](core::solution::Project& project) {
+            std::for_each(solution.projects.begin(), solution.projects.end(), [&](solution::Project& project) {
                 // Scan through objects
-                std::for_each(project.sources.begin(), project.sources.end(), [&](core::solution::Source& source) {
-                    util::iterateDirectory(source.objDir, [&](std::filesystem::directory_entry entry) {
+                std::for_each(project.sources.begin(), project.sources.end(), [&](solution::Source& source) {
+                    ::util::iterateDirectory(source.objDir, [&](std::filesystem::directory_entry entry) {
                         if(entry.path().extension() == project.profile.fileExtensions.objectFileExtension) {
                             paths.push_back(entry.path());
                         }
                     });
                 });
 
-                if(project.type == core::solution::ProjectType::PT_EXECUTABLE) {
+                if(project.type == solution::ProjectType::PT_EXECUTABLE) {
                     std::stringstream cb;
                     cb << project.binDir << project.name << project.profile.fileExtensions.binaryFileExtension;
                     paths.push_back(std::filesystem::path(cb.str()));
 
-                } else if(project.type == core::solution::ProjectType::PT_SHARED_LIB || project.type == core::solution::ProjectType::PT_STATIC_LIB) {
+                } else if(project.type == solution::ProjectType::PT_SHARED_LIB || project.type == solution::ProjectType::PT_STATIC_LIB) {
                     std::stringstream cb;
                     cb << project.binDir << project.name << project.profile.fileExtensions.staticLibExtension;
                     paths.push_back(std::filesystem::path(cb.str()));
@@ -602,4 +602,26 @@ namespace be {
         return 0;
     }
 
+    namespace util {
+        void strSplit(std::string str, char delim, std::function<void(std::string)> cb) {
+            std::stringstream ss(str);
+            std::string temp;
+
+            while(std::getline(ss, temp, delim)) {
+                cb(temp);
+            }
+        }
+
+        void loadFile(std::string path, std::function<void(std::string)> cb) {
+            std::ifstream in(path);
+            if(in.is_open()) {
+                std::string temp;
+                while(std::getline(in, temp)) {
+                    cb(temp);
+                }
+                in.close();
+            }
+        }
+
+    }
 }

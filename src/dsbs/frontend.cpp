@@ -2,7 +2,7 @@
 
 
 namespace fe {
-    core::Operation op = core::Operation::OP_BUILD;
+    dsbs::Operation op = dsbs::Operation::OP_BUILD;
     std::string projectName = "";
     std::string solutionFile = "solution.json";
 
@@ -20,15 +20,15 @@ namespace fe {
 
         std::for_each(arg.begin(), arg.end(), [&](std::string line) {
             std::vector<std::string> tags;
-            util::strSplit(line, '=', [&](std::string tag) {
+            dsbs::util::strSplit(line, '=', [&](std::string tag) {
                 tags.push_back(tag);
             });
 
             if(tags[0] == "-op") {
                 if(tags[1] == "build") {
-                    op = core::Operation::OP_BUILD;
+                    op = dsbs::Operation::OP_BUILD;
                 } else if(tags[1] == "clean") {
-                    op = core::Operation::OP_CLEAN;
+                    op = dsbs::Operation::OP_CLEAN;
                 }
             } else if(tags[0] == "-s") {
                 solutionFile = tags[1];
@@ -51,7 +51,7 @@ namespace fe {
 
             if(isHelp) {
                 //std::cout << "This will load up a help text file from ./dsbs_conf/help.txt" << "\n";
-                util::loadFile("./dsbs-config/config/help.txt", [&](std::string line) {
+                dsbs::util::loadFile("./dsbs-config/config/help.txt", [&](std::string line) {
                     std::cout << line << "\n";
                 });
             }
@@ -60,6 +60,6 @@ namespace fe {
         }
 
 
-        return be::run(op, solutionFile, projectName);
+        return dsbs::run(op, solutionFile, projectName);
     }
 }

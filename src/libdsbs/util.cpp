@@ -1,27 +1,7 @@
-#include "sys.hpp"
+#include <dsbs/dsbs_internal.hpp>
 
 
 namespace util {
-    void strSplit(std::string str, char delim, std::function<void(std::string)> cb) {
-        std::stringstream ss(str);
-        std::string temp;
-
-        while(std::getline(ss, temp, delim)) {
-            cb(temp);
-        }
-    }
-
-    void loadFile(std::string path, std::function<void(std::string)> cb) {
-        std::ifstream in(path);
-        if(in.is_open()) {
-            std::string temp;
-            while(std::getline(in, temp)) {
-                cb(temp);
-            }
-            in.close();
-        }
-    }
-
     void loadStream(std::string path, std::function<void(std::ifstream&)> cb) {
         std::ifstream in(path);
         if(in.is_open()) {
@@ -48,18 +28,18 @@ namespace util {
         }
     }
 
-    core::solution::ProjectType toType(std::string type) {
+    dsbs::solution::ProjectType toType(std::string type) {
         if(type == "executable") {
-            return core::solution::ProjectType::PT_EXECUTABLE;
+            return dsbs::solution::ProjectType::PT_EXECUTABLE;
         }
         else if(type == "static") {
-            return core::solution::ProjectType::PT_STATIC_LIB;
+            return dsbs::solution::ProjectType::PT_STATIC_LIB;
         }
         else if(type == "shared") {
-            return core::solution::ProjectType::PT_SHARED_LIB;
+            return dsbs::solution::ProjectType::PT_SHARED_LIB;
         }
         else {
-            return core::solution::ProjectType::PT_UNKNOWN;
+            return dsbs::solution::ProjectType::PT_UNKNOWN;
         }
     }
 
