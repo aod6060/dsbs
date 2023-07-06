@@ -5,8 +5,8 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "${workspaceFolder}/include/",
-                "${workspaceFolder}/bin/src/libtest_shared/",
-                "${workspaceFolder}/bin/src/libtest_static/"
+                "${workspaceFolder}/example/gnu/gcc_example/include/",
+                "${workspaceFolder}/example/gnu/g++_example/include/"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",

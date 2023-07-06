@@ -6,7 +6,7 @@
         {
             "name": "libtest_static",
             "type": "static",
-            "profile": "./dsbs-config/profile/g++.profile.json",
+            "profile": "./dsbs-config/profile/gnu/gcc.profile.json",
             "bin-dir": "./bin/",
             "sources": [
                 {
@@ -14,19 +14,19 @@
                     "obj-dir": "./obj/libtest_static/"
                 }
             ],
-            "include-dirs": [],
+            "include-dirs": [
+                "./include/"
+            ],
             "lib-dirs": [],
             "libs": [],
-            "compiler-options": [
-                "-std=c++17"
-            ],
+            "compiler-options": [],
             "archiver-options": [],
             "linker-options": []
         },
         {
             "name": "libtest_shared",
             "type": "shared",
-            "profile": "./dsbs-config/profile/g++.profile.json",
+            "profile": "./dsbs-config/profile/gnu/gcc.profile.json",
             "bin-dir": "./bin/",
             "sources": [
                 {
@@ -34,19 +34,19 @@
                     "obj-dir": "./obj/libtest_shared/"
                 }
             ],
-            "include-dirs": [],
+            "include-dirs": [
+                "./include/"
+            ],
             "lib-dirs": [],
             "libs": [],
-            "compiler-options": [
-                "-std=c++17"
-            ],
+            "compiler-options": [],
             "archiver-options": [],
             "linker-options": []
         },
         {
             "name": "hello",
             "type": "executable",
-            "profile": "./dsbs-config/profile/g++.profile.json",
+            "profile": "./dsbs-config/profile/gnu/gcc.profile.json",
             "bin-dir": "./bin/",
             "sources": [
                 {
@@ -55,8 +55,7 @@
                 }
             ],
             "include-dirs": [
-                "./src/libtest_static/",
-                "./src/libtest_shared/"
+                "./include/"
             ],
             "lib-dirs": [
                 "./bin/"
@@ -65,9 +64,7 @@
                 "test_static",
                 "test_shared"
             ],
-            "compiler-options": [
-                "-std=c++17"
-            ],
+            "compiler-options": [],
             "archiver-options": [],
             "linker-options": [
             ]

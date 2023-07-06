@@ -1,0 +1,28 @@
+{
+    "type": "profile",
+    "version": 1,
+    "programs": {
+        "compiler": "gcc",
+        "archiver": "ar",
+        "linker": "gcc"
+    },
+    "file-extensions": {
+        "source-file-extensions": [
+            ".c"
+        ],
+        "object-file-extension": ".o",
+        "binary-file-extension": "",
+        "static-lib-extension": ".a",
+        "shared-lib-extension": ".so"
+    },
+    "flags": {
+        "include-dir-flag": "-I",
+        "lib-dir-flag": "-L",
+        "lib-flag": "-l",
+        "compile-flag": "-c",
+        "object-flag": "-o",
+        "static-lib-flag": "-rcs",
+        "shared-lib-flag": "-fPIC",
+        "shared-lib-flag-linker": "-shared"
+    }
+}

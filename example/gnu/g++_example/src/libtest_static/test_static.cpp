@@ -1,4 +1,4 @@
-#include "test_static.hpp"
+#include <test_static.hpp>
 
 
 std::string getTestStaticString() {
