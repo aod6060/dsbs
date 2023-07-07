@@ -158,25 +158,26 @@ namespace dsbs {
         return -1;
     }
 
-    int executeCommandList(std::vector<command::Command>& commandList);
+    int executeCommandList(std::vector<command::Project>& projectCommandList);
 
     int buildOperation(std::string projectName, solution::Solution& solution) {
         //std::cout << "Building..." << "\n";
 
-        std::vector<command::Command> commandList;
+        //std::vector<command::Command> commandList;
+        std::vector<command::Project> projectCommandList;
 
         if(!projectName.empty()) {
             std::for_each(solution.projects.begin(), solution.projects.end(), [&](solution::Project& project) {
                 if(project.name == projectName) {
+                    command::Project projectCommand;
+                    projectCommand.projectName = project.name;
+                    
                     // Grab sources
                     std::cout << "Building: " << project.name << "\n";
 
                     std::vector<std::string> objects;
 
                     std::for_each(project.sources.begin(), project.sources.end(), [&](solution::Source& source) {
-
-                        
-
                         // Iterate through directory and searching for correct source files
                         ::util::iterateDirectory(std::filesystem::path(source.srcDir), [&](std::filesystem::directory_entry entry) {
                             //std::cout << entry.path().string() << "\n";
@@ -227,7 +228,8 @@ namespace dsbs {
                                         command::Command c;
                                         c.command = command.str();
                                         c.projectName = project.name;
-                                        commandList.push_back(c);
+                                        projectCommand.command.push_back(c);
+                                        //commandList.push_back(c);
                                     }
                                 }
                             );
@@ -268,8 +270,8 @@ namespace dsbs {
                         command::Command c;
                         c.command = cb.str();
                         c.projectName = project.name;
-
-                        commandList.push_back(c);
+                        projectCommand.command.push_back(c);
+                        //commandList.push_back(c);
 
                     } else if(project.type == solution::ProjectType::PT_STATIC_LIB) {
                         std::stringstream cb;
@@ -285,8 +287,11 @@ namespace dsbs {
                         command::Command c;
                         c.command = cb.str();
                         c.projectName = project.name;
-                        commandList.push_back(c);
+                        //commandList.push_back(c);
+                        projectCommand.command.push_back(c);
+
                     } else if(project.type == solution::ProjectType::PT_SHARED_LIB) {
+
 
                         std::cout << "TODO: Currently dsbs doesn't support shared but will in a future update. " << "\n";
                         
@@ -303,7 +308,8 @@ namespace dsbs {
                         command::Command c;
                         c.command = cb.str();
                         c.projectName = project.name;
-                        commandList.push_back(c);
+                        //commandList.push_back(c);
+                        projectCommand.command.push_back(c);
                         /*
                         std::stringstream cb;
 
@@ -342,12 +348,14 @@ namespace dsbs {
                         commandList.push_back(c);
                         */
                     }
+
+                    projectCommandList.push_back(projectCommand);
                 }
             });
         } else {
             std::for_each(solution.projects.begin(), solution.projects.end(), [&](solution::Project& project) {
-                // Grab sources
-                std::cout << "Building: " << project.name << "\n";
+                command::Project projectCommand;
+                projectCommand.projectName = project.name;
 
                 std::vector<std::string> objects;
 
@@ -405,7 +413,8 @@ namespace dsbs {
                                     command::Command c;
                                     c.command = command.str();
                                     c.projectName = project.name;
-                                    commandList.push_back(c);
+                                    //commandList.push_back(c);
+                                    projectCommand.command.push_back(c);
                                 }
                             }
                         );
@@ -447,7 +456,8 @@ namespace dsbs {
                     c.command = cb.str();
                     c.projectName = project.name;
 
-                    commandList.push_back(c);
+                    //commandList.push_back(c);
+                    projectCommand.command.push_back(c);
 
                 } else if(project.type == solution::ProjectType::PT_STATIC_LIB) {
                     std::stringstream cb;
@@ -463,7 +473,8 @@ namespace dsbs {
                     command::Command c;
                     c.command = cb.str();
                     c.projectName = project.name;
-                    commandList.push_back(c);
+                    //commandList.push_back(c);
+                    projectCommand.command.push_back(c);
                 } else if(project.type == solution::ProjectType::PT_SHARED_LIB) {
 
                     std::cout << "TODO: Currently dsbs doesn't support shared but will in a future update. " << "\n";
@@ -481,7 +492,9 @@ namespace dsbs {
                     command::Command c;
                     c.command = cb.str();
                     c.projectName = project.name;
-                    commandList.push_back(c);
+                    //commandList.push_back(c);
+                    projectCommand.command.push_back(c);
+                    
                     /*
                     std::stringstream cb;
 
@@ -521,13 +534,15 @@ namespace dsbs {
                     */
                 }
 
+                projectCommandList.push_back(projectCommand);
             });
         }
 
-        return executeCommandList(commandList);
+        return executeCommandList(projectCommandList);
     }
 
-    int executeCommandList(std::vector<command::Command>& commandList) {
+    int executeCommandList(std::vector<command::Project>& projectCommandList) {
+        /*
         std::for_each(commandList.begin(), commandList.end(), [&](command::Command& command) {
             std::cout << "["<<command.projectName<<"] -> " << command.command << "\n";
             // Execute command with some sort of system level api call.
@@ -536,7 +551,20 @@ namespace dsbs {
                 std::cout << output << "\n";
             }
         });
+        */
 
+        std::for_each(projectCommandList.begin(), projectCommandList.end(), [&](command::Project& project) {
+            std::cout << "Building \""<< project.projectName <<"\"..." << "\n";
+            std::for_each(project.command.begin(), project.command.end(), [&](command::Command& command) {
+                std::cout << "\t* " << command.command << "\n";
+                std::string output = ::util::exec(command.command);
+                if(!output.empty()) {
+                    std::cout << output << "\n";
+                }
+            });
+            std::cout << "End Building \""<< project.projectName <<"\"" << "\n";
+            std::cout << "\n";
+        });
         return 0;
     }
 

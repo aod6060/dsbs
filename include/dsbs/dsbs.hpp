@@ -33,6 +33,11 @@ namespace dsbs {
             std::string projectName;
             std::string command;
         };
+        
+        struct Project {
+            std::string projectName;
+            std::vector<Command> command;
+        };
     }
 
     namespace profile
@@ -126,7 +131,7 @@ namespace dsbs {
         void strSplit(std::string str, char delim, std::function<void(std::string)> cb);
         void loadFile(std::string path, std::function<void(std::string)> cb);
     }
-    
+
     int run(Operation op, std::string solutionFile, std::string projectName);
 }
 
