@@ -5,6 +5,17 @@
 
 #include "dsbs.hpp"
 
+
+namespace dsbs {
+    namespace internal {
+        int loadSolutionProfile(Operation op, std::string solutionFile, std::string projectName);
+        int operationsCheck(Operation op, std::string projectName, solution::Solution& solution);
+        int buildOperation(std::string projectName, solution::Solution& solution);
+        int executeCommandList(std::vector<command::Project>& projectCommandList);
+        int cleanOperation(std::string projectName, solution::Solution& solution);
+    }
+}
+
 namespace util {
     void loadStream(std::string path, std::function<void(std::ifstream &)> cb);
     void saveStream(std::string path, std::function<void(std::ofstream &)> cb);

@@ -78,3 +78,29 @@ namespace util {
         return result;
     }
 }
+
+
+namespace dsbs {
+    namespace util {
+        void strSplit(std::string str, char delim, std::function<void(std::string)> cb) {
+            std::stringstream ss(str);
+            std::string temp;
+
+            while(std::getline(ss, temp, delim)) {
+                cb(temp);
+            }
+        }
+
+        void loadFile(std::string path, std::function<void(std::string)> cb) {
+            std::ifstream in(path);
+            if(in.is_open()) {
+                std::string temp;
+                while(std::getline(in, temp)) {
+                    cb(temp);
+                }
+                in.close();
+            }
+        }
+
+    }
+}
