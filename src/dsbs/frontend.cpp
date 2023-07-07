@@ -18,6 +18,8 @@ namespace fe {
             arg.push_back(argv[i]);
         }
 
+        dsbs::initConfig();
+
         std::for_each(arg.begin(), arg.end(), [&](std::string line) {
             std::vector<std::string> tags;
             dsbs::util::strSplit(line, '=', [&](std::string tag) {
@@ -44,9 +46,9 @@ namespace fe {
         if(isVersion || isHelp) {
 
             if(isVersion) {
-                std::cout << "dsbs version: " << DSBS_VERSION << "\n";
-                std::cout << "solution file version: " << SOLUTION_FILE_VERSION << "\n";
-                std::cout << "profile file version: " << PROFILE_FILE_VERSION << "\n";
+                std::cout << "dsbs version: " << dsbs::getVersion() << "\n";
+                std::cout << "solution file version: " << dsbs::getSolutionFileVersion() << "\n";
+                std::cout << "profile file version: " << dsbs::getProfileFileVersion() << "\n";
             }
 
             if(isHelp) {

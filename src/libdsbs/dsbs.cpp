@@ -26,7 +26,7 @@ namespace dsbs {
                 std::cout << "Error: type isn't profile will try to load" << "\n";
             }
 
-            if(profile.version != PROFILE_FILE_VERSION) {
+            if(profile.version != dsbs::getProfileFileVersion()) {
                 std::cout << "Error: version isn't correct will try to load" << "\n";
             }
 
@@ -71,7 +71,7 @@ namespace dsbs {
                 std::cout << "Error: type isn't solution will try to load" << "\n";
             }
 
-            if(solution.version != SOLUTION_FILE_VERSION) {
+            if(solution.version != dsbs::getSolutionFileVersion()) {
                 std::cout << "Error: wrong version will try to load" << "\n";
             }
 

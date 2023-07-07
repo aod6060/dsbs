@@ -17,10 +17,6 @@
 
 #include <json/json.h>
 
-#define DSBS_VERSION "1.0.1"
-#define SOLUTION_FILE_VERSION 2
-#define PROFILE_FILE_VERSION 1
-
 namespace dsbs {
     enum Operation
     {
@@ -131,6 +127,14 @@ namespace dsbs {
         void strSplit(std::string str, char delim, std::function<void(std::string)> cb);
         void loadFile(std::string path, std::function<void(std::string)> cb);
     }
+
+    void initConfig();
+
+    std::string getVersion();
+
+    int getSolutionFileVersion();
+
+    int getProfileFileVersion();
 
     int run(Operation op, std::string solutionFile, std::string projectName);
 }
