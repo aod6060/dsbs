@@ -1,0 +1,79 @@
+{
+    "type": "solution",
+    "version": 2,
+    "name": "hello",
+    "projects": [
+        {
+            "name": "libtest_static",
+            "type": "static",
+            "profile": "./dsbs-config/profile/mingw/i686-w64-mingw32-g++.profile.json",
+            "bin-dir": "./bin-win/",
+            "sources": [
+                {
+                    "src-dir": "./src/libtest_static/",
+                    "obj-dir": "./obj-win/libtest_static/"
+                }
+            ],
+            "include-dirs": [
+                "./include/"
+            ],
+            "lib-dirs": [],
+            "libs": [],
+            "compiler-options": [
+                "-std=c++17"
+            ],
+            "archiver-options": [],
+            "linker-options": []
+        },
+        {
+            "name": "libtest_shared",
+            "type": "shared",
+            "profile": "./dsbs-config/profile/mingw/i686-w64-mingw32-g++.profile.json",
+            "bin-dir": "./bin-win/",
+            "sources": [
+                {
+                    "src-dir": "./src/libtest_shared/",
+                    "obj-dir": "./obj-win/libtest_shared/"
+                }
+            ],
+            "include-dirs": [
+                "./include/"
+            ],
+            "lib-dirs": [],
+            "libs": [],
+            "compiler-options": [
+                "-std=c++17"
+            ],
+            "archiver-options": [],
+            "linker-options": []
+        },
+        {
+            "name": "hello",
+            "type": "executable",
+            "profile": "./dsbs-config/profile/mingw/i686-w64-mingw32-g++.profile.json",
+            "bin-dir": "./bin-win/",
+            "sources": [
+                {
+                    "src-dir": "./src/hello/",
+                    "obj-dir": "./obj-win/hello/"
+                }
+            ],
+            "include-dirs": [
+                "./include/"
+            ],
+            "lib-dirs": [
+                "./bin-win/"
+            ],
+            "libs": [
+                "test_static",
+                "test_shared"
+            ],
+            "compiler-options": [
+                "-std=c++17"
+            ],
+            "archiver-options": [],
+            "linker-options": [
+            ]
+        }
+    ]
+}

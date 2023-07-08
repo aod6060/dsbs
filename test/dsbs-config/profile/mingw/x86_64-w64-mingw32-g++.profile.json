@@ -1,0 +1,29 @@
+{
+    "type": "profile",
+    "version": 1,
+    "programs": {
+        "compiler": "x86_64-w64-mingw32-g++",
+        "archiver": "x86_64-w64-mingw32-ar",
+        "linker": "x86_64-w64-mingw32-g++"
+    },
+    "file-extensions": {
+        "source-file-extensions": [
+            ".cpp",
+            ".cxx"
+        ],
+        "object-file-extension": ".o",
+        "binary-file-extension": ".exe",
+        "static-lib-extension": ".a",
+        "shared-lib-extension": ".dll"
+    },
+    "flags": {
+        "include-dir-flag": "-I",
+        "lib-dir-flag": "-L",
+        "lib-flag": "-l",
+        "compile-flag": "-c",
+        "object-flag": "-o",
+        "static-lib-flag": "-rcs",
+        "shared-lib-flag": "-fPIC",
+        "shared-lib-flag-linker": "-shared"
+    }
+}
