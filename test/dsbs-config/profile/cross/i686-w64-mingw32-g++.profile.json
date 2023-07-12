@@ -2,13 +2,14 @@
     "type": "profile",
     "version": 1,
     "programs": {
-        "compiler": "i686-w64-mingw32-gcc",
+        "compiler": "i686-w64-mingw32-g++",
         "archiver": "i686-w64-mingw32-ar",
-        "linker": "i686-w64-mingw32-gcc"
+        "linker": "i686-w64-mingw32-g++"
     },
     "file-extensions": {
         "source-file-extensions": [
-            ".c"
+            ".cpp",
+            ".cxx"
         ],
         "object-file-extension": ".o",
         "binary-file-extension": ".exe",
@@ -23,6 +24,7 @@
         "object-flag": "-o",
         "static-lib-flag": "-rcs",
         "shared-lib-flag": "-fPIC",
-        "shared-lib-flag-linker": "-shared"
+        "shared-lib-flag-linker": "-shared",
+        "shared-import-lib-flag": "-Wl,--out-implib,"
     }
 }

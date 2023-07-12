@@ -24,9 +24,18 @@ namespace dsbs {
                             cb << project.binDir << project.name << project.profile.fileExtensions.binaryFileExtension;
                             paths.push_back(std::filesystem::path(cb.str()));
 
-                        } else if(project.type == solution::ProjectType::PT_SHARED_LIB || project.type == solution::ProjectType::PT_STATIC_LIB) {
+                        } else if(project.type == solution::ProjectType::PT_STATIC_LIB) {
                             std::stringstream cb;
                             cb << project.binDir << project.name << project.profile.fileExtensions.staticLibExtension;
+                            //cb << project.binDir << project.name << project.profile.fileExtensions.sharedLibExtension;
+                            paths.push_back(std::filesystem::path(cb.str()));
+                        } else if(project.type == solution::ProjectType::PT_SHARED_LIB) {
+                            std::stringstream cb;
+                            cb << project.binDir << project.name << project.profile.fileExtensions.staticLibExtension;
+                            //cb << project.binDir << project.name << project.profile.fileExtensions.sharedLibExtension;
+                            paths.push_back(std::filesystem::path(cb.str()));
+                            cb.str("");
+                            cb << project.binDir << project.name << project.profile.fileExtensions.sharedLibExtension;
                             paths.push_back(std::filesystem::path(cb.str()));
                         }
 
@@ -48,9 +57,17 @@ namespace dsbs {
                         cb << project.binDir << project.name << project.profile.fileExtensions.binaryFileExtension;
                         paths.push_back(std::filesystem::path(cb.str()));
 
-                    } else if(project.type == solution::ProjectType::PT_SHARED_LIB || project.type == solution::ProjectType::PT_STATIC_LIB) {
+                    } else if(project.type == solution::ProjectType::PT_STATIC_LIB) {
                         std::stringstream cb;
                         cb << project.binDir << project.name << project.profile.fileExtensions.staticLibExtension;
+                        paths.push_back(std::filesystem::path(cb.str()));
+                    } else if(project.type == solution::ProjectType::PT_SHARED_LIB) {
+                        std::stringstream cb;
+                        cb << project.binDir << project.name << project.profile.fileExtensions.staticLibExtension;
+                        //cb << project.binDir << project.name << project.profile.fileExtensions.sharedLibExtension;
+                        paths.push_back(std::filesystem::path(cb.str()));
+                        cb.str("");
+                        cb << project.binDir << project.name << project.profile.fileExtensions.sharedLibExtension;
                         paths.push_back(std::filesystem::path(cb.str()));
                     }
                 });
