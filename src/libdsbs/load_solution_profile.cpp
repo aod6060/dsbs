@@ -44,7 +44,7 @@ namespace dsbs {
                 profile.flags.staticLibFlags = root["flags"]["static-lib-flag"].asString();
                 profile.flags.sharedLibFlags = root["flags"]["shared-lib-flag"].asString();
                 profile.flags.sharedLibFlagsLinker = root["flags"]["shared-lib-flag-linker"].asString();
-
+                profile.flags.sharedImportLibFlag = root["flags"]["shared-import-lib-flag"].asString();
             };
         }
 

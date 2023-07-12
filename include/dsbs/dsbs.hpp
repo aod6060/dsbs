@@ -65,6 +65,7 @@ namespace dsbs {
             std::string staticLibFlags;
             std::string sharedLibFlags;
             std::string sharedLibFlagsLinker;
+            std::string sharedImportLibFlag;
         };
 
         struct Profile

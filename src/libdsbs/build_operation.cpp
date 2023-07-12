@@ -29,7 +29,7 @@ namespace dsbs {
                     std::stringstream command;
                     command << project.profile.programs.compiler << " ";
                     if(project.type == solution::ProjectType::PT_SHARED_LIB) {
-                        //command << project.profile.flags.sharedLibFlags << " ";
+                        command << project.profile.flags.sharedLibFlags << " ";
                     }
                     command << project.profile.flags.compileFlag << " ";
                     command << pairs.srcDir << " ";
@@ -129,7 +129,53 @@ namespace dsbs {
         }
 
         void createSharedLibrary(solution::Project& project, std::vector<std::string>& objects, command::Project& projectCommand) {
-            createStaticLibrary(project, objects, projectCommand);
+            //createStaticLibrary(project, objects, projectCommand);
+
+            /*
+                all: foo.o bar.o main.o
+                    gcc -shared foo.o -o libfoo.dll -Wl,--out-implib,libfoo.a
+                    gcc -shared bar.o foo.o -o libbar.dll -Wl,--out-implib,libbar.a
+                    gcc main.o  -Wl,-rpath=. -L. -lbar -lfoo -o main
+            */
+
+            std::stringstream cb;
+
+            cb << project.profile.programs.linker << " ";
+
+            cb << project.profile.flags.sharedLibFlagsLinker << " ";
+
+            // Adding in objects
+            std::for_each(objects.begin(), objects.end(), [&](std::string o) {
+            cb << o << " ";
+            });
+
+            // Create Binary
+            cb << project.profile.flags.objectFlag << " ";
+            cb << project.binDir << project.name << project.profile.fileExtensions.sharedLibExtension << " ";
+            // Import Library
+            cb << project.profile.flags.sharedImportLibFlag << project.binDir << project.name << project.profile.fileExtensions.staticLibExtension << " ";
+
+            // Link Libraries
+            // Library Dirs
+            std::for_each(project.libDirs.begin(), project.libDirs.end(), [&](std::string s) {
+            cb << project.profile.flags.libDirFlag << s << " ";
+            });
+
+            // Libraries
+            std::for_each(project.libs.begin(), project.libs.end(), [&](std::string s) {
+            cb << project.profile.flags.libFlags << s << " ";
+            });
+
+            // Linker Options
+            std::for_each(project.linkerOptions.begin(), project.linkerOptions.end(), [&](std::string s) {
+            cb << s << " ";
+            });
+
+            command::Command c;
+            c.command = cb.str();
+            c.projectName = project.name;
+            projectCommand.command.push_back(c);
+
         }
 
         void createProjectCommand(solution::Project& project, std::vector<std::string>& objects, command::Project& projectCommand) {
