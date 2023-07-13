@@ -1,0 +1,29 @@
+{
+    "type": "solution",
+    "version": 2,
+    "name": "jsoncpp",
+    "projects": [
+        {
+            "name": "libjsoncpp",
+            "type": "static",
+            "profile": "./dsbs-config/profile/cross/i686-w64-mingw32-g++.profile.json",
+            "bin-dir": "./bin-win/",
+            "sources": [
+                {
+                    "src-dir": "./src/libjsoncpp/",
+                    "obj-dir": "./obj-win/libjsoncpp/"
+                }
+            ],
+            "include-dirs": [
+                "./include/"
+            ],
+            "lib-dirs": [],
+            "libs": [],
+            "compiler-options": [
+                "-std=c++17"
+            ],
+            "archiver-options": [],
+            "linker-options": []
+        }
+    ]
+}
