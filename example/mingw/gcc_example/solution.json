@@ -1,0 +1,73 @@
+{
+    "type": "solution",
+    "version": 2,
+    "name": "hello",
+    "projects": [
+        {
+            "name": "libtest_static",
+            "type": "static",
+            "profile": "dsbs-config\\profile\\mingw\\gcc.profile.json",
+            "bin-dir": "bin\\",
+            "sources": [
+                {
+                    "src-dir": "src\\libtest_static\\",
+                    "obj-dir": "obj\\libtest_static\\"
+                }
+            ],
+            "include-dirs": [
+                "include\\"
+            ],
+            "lib-dirs": [],
+            "libs": [],
+            "compiler-options": [],
+            "archiver-options": [],
+            "linker-options": []
+        },
+        {
+            "name": "libtest_shared",
+            "type": "shared",
+            "profile": "dsbs-config\\profile\\mingw\\gcc.profile.json",
+            "bin-dir": "bin\\",
+            "sources": [
+                {
+                    "src-dir": "src\\libtest_shared\\",
+                    "obj-dir": "obj\\libtest_shared\\"
+                }
+            ],
+            "include-dirs": [
+                "include\\"
+            ],
+            "lib-dirs": [],
+            "libs": [],
+            "compiler-options": [],
+            "archiver-options": [],
+            "linker-options": []
+        },
+        {
+            "name": "hello",
+            "type": "executable",
+            "profile": "dsbs-config\\profile\\mingw\\gcc.profile.json",
+            "bin-dir": "bin\\",
+            "sources": [
+                {
+                    "src-dir": "src\\hello\\",
+                    "obj-dir": "obj\\hello\\"
+                }
+            ],
+            "include-dirs": [
+                "include\\"
+            ],
+            "lib-dirs": [
+                "bin\\"
+            ],
+            "libs": [
+                "test_static",
+                "test_shared"
+            ],
+            "compiler-options": [],
+            "archiver-options": [],
+            "linker-options": [
+            ]
+        }
+    ]
+}
