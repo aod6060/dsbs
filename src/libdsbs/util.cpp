@@ -38,6 +38,9 @@ namespace util {
         else if(type == "shared") {
             return dsbs::solution::ProjectType::PT_SHARED_LIB;
         }
+        else if(type == "shared_dll") {
+            return dsbs::solution::ProjectType::PT_SHARED_DLL_LIB;
+        }
         else {
             return dsbs::solution::ProjectType::PT_UNKNOWN;
         }

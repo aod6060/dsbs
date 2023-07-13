@@ -27,7 +27,7 @@
         },
         {
             "name": "libtest_shared",
-            "type": "shared",
+            "type": "shared_dll",
             "profile": "./dsbs-config/profile/cross/i686/g++.profile.json",
             "bin-dir": "./bin-win/",
             "sources": [

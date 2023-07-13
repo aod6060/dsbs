@@ -25,6 +25,10 @@ namespace dsbs {
                 paths.push_back(std::filesystem::path(cb.str()));
             } else if(project.type == solution::ProjectType::PT_SHARED_LIB) {
                 std::stringstream cb;
+                cb << project.binDir << project.name << project.profile.fileExtensions.sharedLibExtension;
+                paths.push_back(std::filesystem::path(cb.str()));
+            } else if(project.type == solution::ProjectType::PT_SHARED_DLL_LIB) {
+                std::stringstream cb;
                 cb << project.binDir << project.name << project.profile.fileExtensions.staticLibExtension;
                 //cb << project.binDir << project.name << project.profile.fileExtensions.sharedLibExtension;
                 paths.push_back(std::filesystem::path(cb.str()));

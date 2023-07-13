@@ -86,6 +86,7 @@ namespace dsbs {
             PT_EXECUTABLE = 0,
             PT_STATIC_LIB,
             PT_SHARED_LIB,
+            PT_SHARED_DLL_LIB,
             PT_UNKNOWN
         };
 
