@@ -6,7 +6,7 @@
         {
             "name": "libdsbs",
             "type": "static",
-            "profile": "./dsbs-config/profile/g++.profile.json",
+            "profile": "./dsbs-config/profile/gnu/g++.profile.json",
             "bin-dir": "./bin/",
             "sources": [
                 {
@@ -28,7 +28,7 @@
         {
             "name": "dsbs",
             "type": "executable",
-            "profile": "./dsbs-config/profile/g++.profile.json",
+            "profile": "./dsbs-config/profile/gnu/g++.profile.json",
             "bin-dir": "./bin/",
             "sources": [
                 {
@@ -40,7 +40,7 @@
                 "./include/"
             ],
             "lib-dirs": [
-                "./lib/",
+                "./lib/linux/",
                 "./bin/"
             ],
             "libs": [

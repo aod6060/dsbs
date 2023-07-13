@@ -6,7 +6,7 @@
         {
             "name": "libtest_static",
             "type": "static",
-            "profile": "./dsbs-config/profile/cross/i686-w64-mingw32-g++.profile.json",
+            "profile": "./dsbs-config/profile/cross/i686/g++.profile.json",
             "bin-dir": "./bin-win/",
             "sources": [
                 {
@@ -28,7 +28,7 @@
         {
             "name": "libtest_shared",
             "type": "shared",
-            "profile": "./dsbs-config/profile/cross/i686-w64-mingw32-g++.profile.json",
+            "profile": "./dsbs-config/profile/cross/i686/g++.profile.json",
             "bin-dir": "./bin-win/",
             "sources": [
                 {
@@ -50,7 +50,7 @@
         {
             "name": "hello",
             "type": "executable",
-            "profile": "./dsbs-config/profile/cross/i686-w64-mingw32-g++.profile.json",
+            "profile": "./dsbs-config/profile/cross/i686/g++.profile.json",
             "bin-dir": "./bin-win/",
             "sources": [
                 {
