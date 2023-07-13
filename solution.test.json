@@ -1,0 +1,57 @@
+{
+    "type": "solution",
+    "version": 2,
+    "name": "dsbs",
+    "projects": [
+        {
+            "name": "libdsbs",
+            "type": "static",
+            "profile": "./dsbs-config/profile/gnu/g++.profile.json",
+            "bin-dir": "./test/",
+            "sources": [
+                {
+                    "src-dir": "./src/libdsbs/",
+                    "obj-dir": "./obj/libdsbs/"
+                }
+            ],
+            "include-dirs": [
+                "./include/"
+            ],
+            "lib-dirs": [],
+            "libs": [],
+            "compiler-options": [
+                "-std=c++17"
+            ],
+            "archiver-options": [],
+            "linker-options": []
+        },
+        {
+            "name": "dsbs",
+            "type": "executable",
+            "profile": "./dsbs-config/profile/gnu/g++.profile.json",
+            "bin-dir": "./test/",
+            "sources": [
+                {
+                    "src-dir": "./src/dsbs/",
+                    "obj-dir": "./obj/dsbs/"
+                }
+            ],
+            "include-dirs": [
+                "./include/"
+            ],
+            "lib-dirs": [
+                "./lib/linux/",
+                "./test/"
+            ],
+            "libs": [
+                "dsbs",
+                "jsoncpp"
+            ],
+            "compiler-options": [
+                "-std=c++17"
+            ],
+            "archiver-options": [],
+            "linker-options": []
+        }
+    ]
+}

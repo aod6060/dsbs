@@ -1,0 +1,31 @@
+dsbs -op=[build/clean] -s=[solution file] -p=[project name] -v -h
+
+-op ~ This flag for operations and there are currently only
+      2 different states to this flag
+
+      1. build ~ If this is specified it will build the entire solution
+         unless the -p flag is specified
+
+      2. clean ~ If thi is specified it will clean the entire solution
+         unless the -p flag is specified
+
+-s ~ This flag allows for the user to select a different solution file
+     from the current directory. If not used dsbs assumes the solution
+     file to be "solution.json"
+
+-p ~ This flag allows for the user to focus on an individual project from
+     the solution. If not used dsbs assumes the entire solution
+
+-v ~ This flag print the version of dsbs, solution file, and profile file.
+     If this is specified it won't build or clean any solution and will early
+     exit from the application.
+
+-h ~ This flag prints the help informaton for the dsbs command. Just line -v it
+     won't build or clean any solution just early exit from the application.
+
+DEFAULT Values
+If command is called like so "./dsbs" or "dsbs" if installed on system.
+
+-op=build
+-s=solution.json
+-p=
