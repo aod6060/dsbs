@@ -7,3 +7,5 @@ If you want to understand how dsbs works check either the test in the bin folder
 As for the "dsbs" command just type "./dsbs -h" in the terminal to view the commands help menu. It will describe how to use the dsbs command.
 
 I will be adding in a wiki once I finalize version 1.0.0 for dsbs. I'll post a link here.
+
+This project is currently under a dual license depending on which region your from. If you from Europe your now under the GPLv3 license see LICENSE_EU for details. If your from other regions your still covered under the MIT license see LICENSE for details. 
