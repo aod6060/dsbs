@@ -11,7 +11,8 @@
             "sources": [
                 {
                     "src-dir": "./src/libdsbs/",
-                    "obj-dir": "./obj/libdsbs/"
+                    "obj-dir": "./obj/libdsbs/", 
+		    "cache-dir": "./cache/libdsbs"
                 }
             ],
             "include-dirs": [
@@ -33,7 +34,8 @@
             "sources": [
                 {
                     "src-dir": "./src/dsbs/",
-                    "obj-dir": "./obj/dsbs/"
+                    "obj-dir": "./obj/dsbs/", 
+		    "cache-dir": "./obj/dsbs"
                 }
             ],
             "include-dirs": [

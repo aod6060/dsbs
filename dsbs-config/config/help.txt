@@ -1,4 +1,4 @@
-dsbs -op=[build/clean] -s=[solution file] -p=[project name] -v -h
+dsbs -op=[build/clean] -s=[solution file] -p=[project name] -v -h -useMT
 
 -op ~ This flag for operations and there are currently only
       2 different states to this flag
@@ -23,9 +23,12 @@ dsbs -op=[build/clean] -s=[solution file] -p=[project name] -v -h
 -h ~ This flag prints the help informaton for the dsbs command. Just line -v it
      won't build or clean any solution just early exit from the application.
 
+-useMT ~ This flag will tell the dsbs to use multi threading for compilations and cleaning.
+         By default -useMT is false.
 DEFAULT Values
 If command is called like so "./dsbs" or "dsbs" if installed on system.
 
 -op=build
 -s=solution.json
 -p=
+

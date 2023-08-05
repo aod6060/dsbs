@@ -12,6 +12,7 @@
 #include <random>
 #include <chrono>
 #include <filesystem>
+#include <thread>
 
 #include <cstdio>
 
@@ -26,13 +27,13 @@ namespace dsbs {
 
     namespace command {
         struct Command {
-            std::string projectName;
             std::string command;
         };
         
         struct Project {
             std::string projectName;
-            std::vector<Command> command;
+            std::vector<Command> commands;
+	    Command projectCommand;
         };
     }
 
@@ -139,7 +140,7 @@ namespace dsbs {
 
     int getProfileFileVersion();
 
-    int run(Operation op, std::string solutionFile, std::string projectName);
+    int run(Operation op, std::string solutionFile, std::string projectName, bool useMT = false);
 }
 
 
