@@ -31,11 +31,17 @@ namespace dsbs {
 		    ss << source.cacheDir << args[0] << ext << ".cache";
 
 		    std::filesystem::path cacheObject = std::filesystem::path(ss.str());
+		    std::filesystem::path objObject = std::filesystem::path(pairs.objDir);
 
 		    //std::cout << cacheObject << "\n";
 		    //
 		    //
 		    bool needRefresh = false;
+		    
+
+		    if(!std::filesystem::exists(objObject)) {
+			    needRefresh = true;
+		    }
 
 		    if(!std::filesystem::exists(cacheObject)) {
 			    needRefresh = true;

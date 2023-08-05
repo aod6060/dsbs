@@ -12,7 +12,7 @@
                 {
                     "src-dir": "./src/libdsbs/",
                     "obj-dir": "./obj/libdsbs/",
-		    "cache-dir": "./obj/libdsbs/"
+		    "cache-dir": "./cache/libdsbs/"
                 }
             ],
             "include-dirs": [

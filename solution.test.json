@@ -35,7 +35,7 @@
                 {
                     "src-dir": "./src/dsbs/",
                     "obj-dir": "./obj/dsbs/", 
-		    "cache-dir": "./obj/dsbs/"
+		    "cache-dir": "./cache/dsbs/"
                 }
             ],
             "include-dirs": [

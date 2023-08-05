@@ -1,6 +1,6 @@
 {
     "type": "solution",
-    "version": 2,
+    "version": 3,
     "name": "hello",
     "projects": [
         {
@@ -11,7 +11,8 @@
             "sources": [
                 {
                     "src-dir": "./src/libtest_static/",
-                    "obj-dir": "./obj-win/libtest_static/"
+                    "obj-dir": "./obj-win/libtest_static/", 
+		    "cache-dir": "./cache/libtest_static"
                 }
             ],
             "include-dirs": [
@@ -33,7 +34,8 @@
             "sources": [
                 {
                     "src-dir": "./src/libtest_shared/",
-                    "obj-dir": "./obj-win/libtest_shared/"
+                    "obj-dir": "./obj-win/libtest_shared/",
+		    "cache-dir": "./cache/libtest_shared/"
                 }
             ],
             "include-dirs": [
@@ -55,7 +57,8 @@
             "sources": [
                 {
                     "src-dir": "./src/hello/",
-                    "obj-dir": "./obj-win/hello/"
+                    "obj-dir": "./obj-win/hello/",
+		    "cache-dir": "./cache/hello/"
                 }
             ],
             "include-dirs": [
