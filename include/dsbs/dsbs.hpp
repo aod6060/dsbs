@@ -94,6 +94,7 @@ namespace dsbs {
         {
             std::string srcDir;
             std::string objDir;
+	    std::string cacheDir;
         };
 
         struct Project

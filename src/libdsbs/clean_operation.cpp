@@ -12,6 +12,13 @@ namespace dsbs {
                         paths.push_back(entry.path());
                     }
                 });
+
+		// Delete Cache
+		::util::iterateDirectory(source.cacheDir, [&](std::filesystem::directory_entry entry) {
+		    if(entry.path().extension() == ".cache") {
+		    	paths.push_back(entry.path());
+		    }
+		});
             });
 
             if(project.type == solution::ProjectType::PT_EXECUTABLE) {

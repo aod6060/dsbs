@@ -10,6 +10,7 @@ namespace dsbs {
                     solution::Source pairs;
                     pairs.srcDir = entry.path().string();
 
+
                     std::string temp = entry.path().filename().string();
                     std::vector<std::string> args;
 
@@ -24,32 +25,78 @@ namespace dsbs {
 
                     objects.push_back(pairs.objDir);
 
+		    ss.str("");
+
+		    // Do a cache check to see if the file has changed...
+		    ss << source.cacheDir << args[0] << ext << ".cache";
+
+		    std::filesystem::path cacheObject = std::filesystem::path(ss.str());
+
+		    //std::cout << cacheObject << "\n";
+		    //
+		    //
+		    bool needRefresh = false;
+
+		    if(!std::filesystem::exists(cacheObject)) {
+			    needRefresh = true;
+			    std::filesystem::copy(entry.path(), cacheObject);
+		    }
+
+
+		    std::stringstream sourceCode, cacheCode;
+
+		    util::loadFile(entry.path().string(), [&](std::string line) {
+				    sourceCode << line << "\n";
+		    });
+
+		    util::loadFile(cacheObject.string(), [&](std::string line) {
+				    cacheCode << line << "\n";
+		    });
+
+		    std::string sourceCodeStr = sourceCode.str();
+		    std::string cacheCodeStr = cacheCode.str();
+
+		    if(sourceCodeStr.size() != cacheCodeStr.size()) {
+			    needRefresh = true;
+			    std::filesystem::remove(cacheObject);
+			    std::filesystem::copy(entry.path(), cacheObject);
+		    } else {
+			    if(sourceCodeStr != cacheCodeStr) {
+				    needRefresh = true;
+				    std::filesystem::remove(cacheObject);
+				    std::filesystem::copy(entry.path(), cacheObject);
+			    }
+		    }
+
                     //std::cout << pairs.srcDir << " -> " << pairs.objDir << "\n";
                     // Build Command
-                    std::stringstream command;
-                    command << project.profile.programs.compiler << " ";
-                    if(project.type == solution::ProjectType::PT_SHARED_LIB) {
-                        command << project.profile.flags.sharedLibFlags << " ";
-                    }
-                    command << project.profile.flags.compileFlag << " ";
-                    command << pairs.srcDir << " ";
-                    command << project.profile.flags.objectFlag << " ";
-                    command << pairs.objDir << " ";
-                    // Includes
-                    std::for_each(project.includeDirs.begin(), project.includeDirs.end(), [&](std::string inc) {
-                        command << project.profile.flags.includeDirFlag << inc << " ";
-                    });
-                    // Compiler Options
-                    std::for_each(project.compilerOptions.begin(), project.compilerOptions.end(), [&](std::string option) {
-                        command << option << " ";
-                    });
+		    //
+		    if(needRefresh) {
+                    	std::stringstream command;
+                    	command << project.profile.programs.compiler << " ";
+                    	if(project.type == solution::ProjectType::PT_SHARED_LIB) {
+                        	command << project.profile.flags.sharedLibFlags << " ";
+                    	}
+                    	command << project.profile.flags.compileFlag << " ";
+                    	command << pairs.srcDir << " ";
+                    	command << project.profile.flags.objectFlag << " ";
+                    	command << pairs.objDir << " ";
+                    	// Includes
+                    	std::for_each(project.includeDirs.begin(), project.includeDirs.end(), [&](std::string inc) {
+                        	command << project.profile.flags.includeDirFlag << inc << " ";
+                    	});
+                    	// Compiler Options
+                    	std::for_each(project.compilerOptions.begin(), project.compilerOptions.end(), [&](std::string option) {
+                        	command << option << " ";
+                    	});
 
-                    //commandList.push_back(command.str());
-                    command::Command c;
-                    c.command = command.str();
-                    c.projectName = project.name;
-                    //commandList.push_back(c);
-                    projectCommand.command.push_back(c);
+                    	//commandList.push_back(command.str());
+                    	command::Command c;
+                    	c.command = command.str();
+                    	c.projectName = project.name;
+                    	//commandList.push_back(c);
+                    	projectCommand.command.push_back(c);
+		    }
                 }
             };
         }

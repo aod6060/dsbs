@@ -7,5 +7,6 @@ int main(int argc, char** argv) {
     std::cout << "Hello, World" << std::endl;
     std::cout << getTestStaticString() << std::endl;
     std::cout << getTestSharedString() << std::endl;
+    std::cout << "This is the end!!!" << std::endl;
     return 0;
 }

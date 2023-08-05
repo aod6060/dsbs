@@ -11,7 +11,8 @@
             "sources": [
                 {
                     "src-dir": "./src/libtest_static/",
-                    "obj-dir": "./obj/libtest_static/"
+                    "obj-dir": "./obj/libtest_static/",
+		    "cache-dir": "./cache/libtest_static/"
                 }
             ],
             "include-dirs": [
@@ -33,7 +34,8 @@
             "sources": [
                 {
                     "src-dir": "./src/libtest_shared/",
-                    "obj-dir": "./obj/libtest_shared/"
+                    "obj-dir": "./obj/libtest_shared/",
+		    "cache-dir": "./cache/libtest_shared/"
                 }
             ],
             "include-dirs": [
@@ -55,7 +57,8 @@
             "sources": [
                 {
                     "src-dir": "./src/hello/",
-                    "obj-dir": "./obj/hello/"
+                    "obj-dir": "./obj/hello/",
+		    "cache-dir": "./cache/hello/"
                 }
             ],
             "include-dirs": [

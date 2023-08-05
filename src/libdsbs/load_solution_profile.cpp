@@ -86,6 +86,7 @@ namespace dsbs {
                         solution::Source source;
                         source.srcDir = v2["src-dir"].asString();
                         source.objDir = v2["obj-dir"].asString();
+			source.cacheDir = v2["cache-dir"].asString();
                         project.sources.push_back(source);
                     });
 
