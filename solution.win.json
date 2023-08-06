@@ -13,7 +13,12 @@
                     "src-dir": "./src/libdsbs/",
                     "obj-dir": "./obj-win/libdsbs/",
 		    "cache-dir": "./cache/libdsbs/"
-                }
+                }, 
+		{
+			"src-dir": "./src/libdsbs/win/", 
+			"obj-dir": "./obj-win/libdsbs/win/", 
+			"cache-dir": "./cache/libdsbs/win/"
+		}
             ],
             "include-dirs": [
                 "./include/"

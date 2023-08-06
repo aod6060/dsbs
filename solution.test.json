@@ -13,7 +13,12 @@
                     "src-dir": "./src/libdsbs/",
                     "obj-dir": "./obj/libdsbs/", 
 		    "cache-dir": "./cache/libdsbs/"
-                }
+                },
+		{
+			"src-dir": "./src/libdsbs/linux/",
+			"obj-dir": "./obj/libdsbs/linux/",
+			"cache-dir": "./cache/libdsbs/linux"
+		}
             ],
             "include-dirs": [
                 "./include/"
