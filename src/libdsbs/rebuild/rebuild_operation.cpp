@@ -7,103 +7,93 @@ namespace dsbs {
 		std::function<void(std::string)> createExtensionCheck(std::filesystem::directory_entry entry, solution::Source& source, solution::Project& project, std::vector<std::string>& objects, command::Project& projectCommand) {
 		    return [&](std::string ext) {
 		        if(ext == entry.path().extension()) {
-		            //std::cout << entry.path().string() << "\n";
-		            solution::Source pairs;
-		            pairs.srcDir = entry.path().string();
+				    //std::cout << entry.path().string() << "\n";
+				    solution::Source pairs;
+				    pairs.srcDir = entry.path().string();
 
 
-		            std::string temp = entry.path().filename().string();
-		            std::vector<std::string> args;
+				    std::string temp = entry.path().filename().string();
+				    std::vector<std::string> args;
 
-		            util::strSplit(temp, '.', [&](std::string s) {
-		                args.push_back(s);
-		            });
+				    util::strSplit(temp, '.', [&](std::string s) {
+				        args.push_back(s);
+				    });
 
-		            std::stringstream ss;
-		            ss << source.objDir << args[0] << project.profile.fileExtensions.objectFileExtension;
+				    std::stringstream ss;
+				    ss << source.objDir << args[0] << project.profile.fileExtensions.objectFileExtension;
 
-		            pairs.objDir = ss.str();
+				    pairs.objDir = ss.str();
 
-		            objects.push_back(pairs.objDir);
+				    objects.push_back(pairs.objDir);
 
-			    ss.str("");
+				    ss.str("");
 
-			    // Do a cache check to see if the file has changed...
-			    ss << source.cacheDir << args[0] << ext << ".cache";
+				    // Do a cache check to see if the file has changed...
+				    ss << source.cacheDir << args[0] << ext << ".cache";
 
-			    std::filesystem::path cacheObject = std::filesystem::path(ss.str());
-			    std::filesystem::path objObject = std::filesystem::path(pairs.objDir);
+				    std::filesystem::path cacheObject = std::filesystem::path(ss.str());
+				    //std::filesystem::path objObject = std::filesystem::path(pairs.objDir);
 
-			    //std::cout << cacheObject << "\n";
-			    //
-			    //
-			    bool needRefresh = false;
-			    
+				    //std::cout << cacheObject << "\n";
+				    //
+				    //
 
-			    if(!std::filesystem::exists(objObject)) {
-				    needRefresh = true;
-			    }
-
-			    if(!std::filesystem::exists(cacheObject)) {
-				    needRefresh = true;
-				    std::filesystem::copy(entry.path(), cacheObject);
-			    }
-
-
-			    std::stringstream sourceCode, cacheCode;
-
-			    util::loadFile(entry.path().string(), [&](std::string line) {
-					    sourceCode << line << "\n";
-			    });
-
-			    util::loadFile(cacheObject.string(), [&](std::string line) {
-					    cacheCode << line << "\n";
-			    });
-
-			    std::string sourceCodeStr = sourceCode.str();
-			    std::string cacheCodeStr = cacheCode.str();
-
-			    if(sourceCodeStr.size() != cacheCodeStr.size()) {
-				    needRefresh = true;
-				    std::filesystem::remove(cacheObject);
-				    std::filesystem::copy(entry.path(), cacheObject);
-			    } else {
-				    if(sourceCodeStr != cacheCodeStr) {
-					    needRefresh = true;
-					    std::filesystem::remove(cacheObject);
+				    if(!std::filesystem::exists(cacheObject)) {
 					    std::filesystem::copy(entry.path(), cacheObject);
 				    }
-			    }
+
+
+				    std::stringstream sourceCode, cacheCode;
+
+				    util::loadFile(entry.path().string(), [&](std::string line) {
+						    sourceCode << line << "\n";
+				    });
+
+				    util::loadFile(cacheObject.string(), [&](std::string line) {
+						    cacheCode << line << "\n";
+				    });
+
+				    std::string sourceCodeStr = sourceCode.str();
+				    std::string cacheCodeStr = cacheCode.str();
+
+				    if(sourceCodeStr.size() != cacheCodeStr.size()) {
+					    std::filesystem::remove(cacheObject);
+					    std::filesystem::copy(entry.path(), cacheObject);
+				    } else {
+					    if(sourceCodeStr != cacheCodeStr) {
+						    std::filesystem::remove(cacheObject);
+						    std::filesystem::copy(entry.path(), cacheObject);
+					    }
+				    }
 
 		            //std::cout << pairs.srcDir << " -> " << pairs.objDir << "\n";
 		            // Build Command
 			    //
-			    if(needRefresh) {
-		            	std::stringstream command;
-		            	command << project.profile.programs.compiler << " ";
-		            	if(project.type == solution::ProjectType::PT_SHARED_LIB) {
-		                	command << project.profile.flags.sharedLibFlags << " ";
-		            	}
-		            	command << project.profile.flags.compileFlag << " ";
-		            	command << pairs.srcDir << " ";
-		            	command << project.profile.flags.objectFlag << " ";
-		            	command << pairs.objDir << " ";
-		            	// Includes
-		            	std::for_each(project.includeDirs.begin(), project.includeDirs.end(), [&](std::string inc) {
-		                	command << project.profile.flags.includeDirFlag << inc << " ";
-		            	});
-		            	// Compiler Options
-		            	std::for_each(project.compilerOptions.begin(), project.compilerOptions.end(), [&](std::string option) {
-		                	command << option << " ";
-		            	});
+			    	std::stringstream command;
+			    	command << project.profile.programs.compiler << " ";
+			    	if(project.type == solution::ProjectType::PT_SHARED_LIB) {
+			        	command << project.profile.flags.sharedLibFlags << " ";
+			    	}
+			    	command << project.profile.flags.compileFlag << " ";
+			    	command << pairs.srcDir << " ";
+			    	command << project.profile.flags.objectFlag << " ";
+			    	command << pairs.objDir << " ";
+			    	// Includes
+			    	std::for_each(project.includeDirs.begin(), project.includeDirs.end(), [&](std::string inc) {
+			        	command << project.profile.flags.includeDirFlag << inc << " ";
+			    	});
+			    	// Compiler Options
+			    	std::for_each(project.compilerOptions.begin(), project.compilerOptions.end(), [&](std::string option) {
+			        	command << option << " ";
+			    	});
 
-		            	//commandList.push_back(command.str());
-		            	command::Command c;
-		            	c.command = command.str();
-		            	//c.projectName = project.name;
-		            	//commandList.push_back(c);
-		            	projectCommand.commands.push_back(c);
-			    }
+			    	//commandList.push_back(command.str());
+			    	command::Command c;
+			    	c.command = command.str();
+			    	//c.projectName = project.name;
+			    	//commandList.push_back(c);
+			    	projectCommand.commands.push_back(c);
+			    
 		        }
 		    };
 		}
@@ -312,7 +302,7 @@ namespace dsbs {
 		    projectCommandList.push_back(projectCommand);
 		}
 		
-		int buildOperation(std::string projectName, solution::Solution& solution, bool useMT) {
+		int rebuildOperation(std::string projectName, solution::Solution& solution, bool useMT) {
 		    std::vector<command::Project> projectCommandList;
 
 		    if(!projectName.empty()) {

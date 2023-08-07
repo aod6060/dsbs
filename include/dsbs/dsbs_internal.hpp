@@ -34,7 +34,10 @@ namespace dsbs {
 	namespace release {
 		int releaseOperation(solution::Solution& solution);
 	}
-
+	
+	namespace run {
+		int runOperation(std::string projectName, solution::Solution& solution, bool useMT);
+	}
     }
 }
 

@@ -8,6 +8,28 @@ dsbs -op=[build/clean] -s=[solution file] -p=[project name] -v -h -useMT
 
       2. clean ~ If thi is specified it will clean the entire solution
          unless the -p flag is specified
+         
+      3. rebuild ~ This will rebuild the project without considering the
+         caching feature of dsbs. If -p is specified then it will only
+         rebuild a single project.
+      
+      4. init ~ This will initialize a directory structure from the 
+         solution.json file
+         
+      5. run ~ This will run the "main" project for dsbs. If the project
+         isn't located in your bin-dir then it will build the project
+         and then run it. The bin-dir should be the working directory.
+         
+      6. release ~ This will take the solution file and creates a number of
+         packaging formats for whatever platform your using.
+         
+         a. Linux
+         	~ Debian Package
+         	~ Flatpacks
+         	~ Zip Archive
+         b. Windows
+         	~ Windows Installer     
+         	~ Zip Archive
 
 -s ~ This flag allows for the user to select a different solution file
      from the current directory. If not used dsbs assumes the solution

@@ -43,6 +43,11 @@
 			"src-dir": "./src/libdsbs/release/",
 			"obj-dir": "./obj/libdsbs/release/",
 			"cache-dir": "./cache/libdsbs/release/"
+		},
+		{
+			"src-dir": "./src/libdsbs/run/",
+			"obj-dir": "./obj/libdsbs/run/",
+			"cache-dir": "./cache/libdsbs/run/"
 		}
             ],
             "include-dirs": [

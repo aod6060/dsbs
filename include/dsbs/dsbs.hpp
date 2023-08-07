@@ -22,7 +22,11 @@ namespace dsbs {
     enum Operation
     {
         OP_BUILD = 0,
-        OP_CLEAN
+        OP_CLEAN,
+        OP_REBUILD,
+        OP_INIT,
+        OP_RELEASE,
+        OP_RUN
     };
 
     namespace command {

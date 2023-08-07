@@ -29,10 +29,19 @@ namespace fe {
 
             if(tags[0] == "-op") {
                 if(tags[1] == "build") {
-                    op = dsbs::Operation::OP_BUILD;
+                    	op = dsbs::Operation::OP_BUILD;
                 } else if(tags[1] == "clean") {
-                    op = dsbs::Operation::OP_CLEAN;
+                    	op = dsbs::Operation::OP_CLEAN;
+                } else if(tags[1] == "rebuild") {
+                	op = dsbs::Operation::OP_REBUILD;
+                } else if(tags[1] == "init") {
+                	op = dsbs::Operation::OP_INIT;
+                } else if(tags[1] == "release") {
+                	op = dsbs::Operation::OP_RELEASE;
+                } else if(tags[1] == "run") {
+                	op = dsbs::Operation::OP_RUN;
                 }
+            
             } else if(tags[0] == "-s") {
                 solutionFile = tags[1];
             } else if(tags[0] == "-p") {
