@@ -18,6 +18,31 @@
 			"src-dir": "./src/libdsbs/linux/",
 			"obj-dir": "./obj/libdsbs/linux/",
 			"cache-dir": "./cache/libdsbs/linux/"
+		},
+		{
+			"src-dir": "./src/libdsbs/init/",
+			"obj-dir": "./obj/libdsbs/init/",
+			"cache-dir": "./cache/libdsbs/init/"
+		},
+		{
+			"src-dir": "./src/libdsbs/build/",
+			"obj-dir": "./obj/libdsbs/build/",
+			"cache-dir": "./cache/libdsbs/build/"
+		},
+		{
+			"src-dir": "./src/libdsbs/rebuild/",
+			"obj-dir": "./obj/libdsbs/rebuild/",
+			"cache-dir": "./cache/libdsbs/rebuild/"
+		},
+		{
+			"src-dir": "./src/libdsbs/clean/",
+			"obj-dir": "./obj/libdsbs/clean/",
+			"cache-dir": "./cache/libdsbs/clean/"
+		},
+		{
+			"src-dir": "./src/libdsbs/release/",
+			"obj-dir": "./obj/libdsbs/release/",
+			"cache-dir": "./cache/libdsbs/release/"
 		}
             ],
             "include-dirs": [

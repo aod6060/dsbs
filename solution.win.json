@@ -18,6 +18,31 @@
 			"src-dir": "./src/libdsbs/win/", 
 			"obj-dir": "./obj-win/libdsbs/win/", 
 			"cache-dir": "./cache/libdsbs/win/"
+		},
+		{
+			"src-dir": "./src/libdsbs/init/",
+			"obj-dir": "./obj-win/libdsbs/init/",
+			"cache-dir": "./cache/libdsbs/init/"
+		},
+		{
+			"src-dir": "./src/libdsbs/build/",
+			"obj-dir": "./obj-win/libdsbs/build/",
+			"cache-dir": "./cache/libdsbs/build/"
+		},
+		{
+			"src-dir": "./src/libdsbs/rebuild/",
+			"obj-dir": "./obj-win/libdsbs/rebuild/",
+			"cache-dir": "./cache/libdsbs/rebuild/"
+		},
+		{
+			"src-dir": "./src/libdsbs/clean/",
+			"obj-dir": "./obj-win/libdsbs/clean/",
+			"cache-dir": "./cache/libdsbs/clean/"
+		},
+		{
+			"src-dir": "./src/libdsbs/release/",
+			"obj-dir": "./obj-win/libdsbs/release/",
+			"cache-dir": "./cache/libdsbs/release/"
 		}
             ],
             "include-dirs": [

@@ -13,6 +13,28 @@ namespace dsbs {
         int buildOperation(std::string projectName, solution::Solution& solution, bool useMT);
         int executeCommandList(std::vector<command::Project>& projectCommandList, bool useMT);
         int cleanOperation(std::string projectName, solution::Solution& solution, bool useMt);
+
+
+	namespace init {
+		int initOperation(solution::Solution& solution);
+	}
+
+	namespace build {
+		int buildOperation(std::string projectName, solution::Solution& solution, bool useMT);
+	}
+
+	namespace rebuild {
+		int rebuildOperation(std::string projectName, solution::Solution& solution, bool useMT);	
+	}
+
+	namespace clean {
+		int cleanOperation(std::string projectName, solution::Solution& solution, bool useMt);
+	}
+
+	namespace release {
+		int releaseOperation(solution::Solution& solution);
+	}
+
     }
 }
 
