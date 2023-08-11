@@ -82,7 +82,8 @@
             ],
             "libs": [
                 "dsbs",
-                "jsoncpp"
+                "jsoncpp",
+                "pthread"
             ],
             "compiler-options": [
                 "-std=c++17"

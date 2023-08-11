@@ -1,4 +1,5 @@
 #include <dsbs/dsbs_internal.hpp>
+#include <windows.h>
 
 namespace dsbs {
     namespace internal {

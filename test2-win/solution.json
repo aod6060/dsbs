@@ -1,0 +1,28 @@
+{
+	"type": "solution",
+	"version": 3,
+	"name": "test2",
+	"projects": [
+		{
+			"name": "test2",
+			"type": "executable",
+			"profile": ".\\dsbs-config\\profile\\mingw\\g++.profile.json",
+			"bin-dir": ".\\bin\\",
+			"sources": [
+				{
+					"src-dir": ".\\src\\",
+					"obj-dir": ".\\obj\\",
+					"cache-dir": ".\\cache\\"
+				}
+			],
+			"include-dirs": [],
+			"lib-dirs": [],
+			"libs": [],
+			"compiler-options": [
+				"-std=c++17"
+			],
+			"archiver-options": [],
+			"linker-options": []
+		}
+	]
+}
