@@ -1,0 +1,94 @@
+{
+    "type": "solution",
+    "version": 2,
+    "name": "dsbs",
+    "projects": [
+        {
+            "name": "libdsbs",
+            "type": "static",
+            "profile": "./dsbs-config/profile/cross/i686/g++.profile.json",
+            "bin-dir": "./bin-win/",
+            "sources": [
+                {
+                    "src-dir": "./src/libdsbs/",
+                    "obj-dir": "./obj-win/libdsbs/",
+		    "cache-dir": "./cache/libdsbs/"
+                }, 
+		{
+			"src-dir": "./src/libdsbs/win/", 
+			"obj-dir": "./obj-win/libdsbs/win/", 
+			"cache-dir": "./cache/libdsbs/win/"
+		},
+		{
+			"src-dir": "./src/libdsbs/init/",
+			"obj-dir": "./obj-win/libdsbs/init/",
+			"cache-dir": "./cache/libdsbs/init/"
+		},
+		{
+			"src-dir": "./src/libdsbs/build/",
+			"obj-dir": "./obj-win/libdsbs/build/",
+			"cache-dir": "./cache/libdsbs/build/"
+		},
+		{
+			"src-dir": "./src/libdsbs/rebuild/",
+			"obj-dir": "./obj-win/libdsbs/rebuild/",
+			"cache-dir": "./cache/libdsbs/rebuild/"
+		},
+		{
+			"src-dir": "./src/libdsbs/clean/",
+			"obj-dir": "./obj-win/libdsbs/clean/",
+			"cache-dir": "./cache/libdsbs/clean/"
+		},
+		{
+			"src-dir": "./src/libdsbs/release/",
+			"obj-dir": "./obj-win/libdsbs/release/",
+			"cache-dir": "./cache/libdsbs/release/"
+		},
+		{
+			"src-dir": "./src/libdsbs/run/",
+			"obj-dir": "./obj-win/libdsbs/run/",
+			"cache-dir": "./cache/libdsbs/run/"
+		}
+            ],
+            "include-dirs": [
+                "./include/"
+            ],
+            "lib-dirs": [],
+            "libs": [],
+            "compiler-options": [
+                "-std=c++17"
+            ],
+            "archiver-options": [],
+            "linker-options": []
+        },
+        {
+            "name": "dsbs",
+            "type": "executable",
+            "profile": "./dsbs-config/profile/cross/i686/g++.profile.json",
+            "bin-dir": "./bin-win/",
+            "sources": [
+                {
+                    "src-dir": "./src/dsbs/",
+                    "obj-dir": "./obj-win/dsbs/",
+		    "cache-dir": "./cache/dsbs/"
+                }
+            ],
+            "include-dirs": [
+                "./include/"
+            ],
+            "lib-dirs": [
+                "./lib/window/",
+                "./bin-win/"
+            ],
+            "libs": [
+                "dsbs",
+                "jsoncpp"
+            ],
+            "compiler-options": [
+                "-std=c++17"
+            ],
+            "archiver-options": [],
+            "linker-options": []
+        }
+    ]
+}

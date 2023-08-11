@@ -1,0 +1,32 @@
+{
+	"type": "solution",
+	"version": 3,
+	"name": "init-test",
+	"projects": [
+		{
+			"name": "test",
+			"type": "executable",
+			"profile": "./dsbs-config/profile/gnu/g++.profile.json",
+			"bin-dir": "./bin/",
+			"sources": [
+				{
+					"src-dir": "./src/",
+					"obj-dir": "./obj/",
+					"cache-dir": "./cache/",
+				}
+			],
+			"include-dirs": [
+				"./include/"
+			],
+			"lib-dirs": [
+				"./lib/"
+			],
+			"libs": [],
+			"compiler-options": [
+				"-std=c++17"
+			],
+			"archiver-options": [],
+			"linker-options": []
+		}
+	]
+}
