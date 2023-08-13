@@ -1,7 +1,16 @@
-dsbs -op=[build/clean] -s=[solution file] -p=[project name] -v -h -useMT
+dsbs 
+	-op=[init, build, rebuild, clean, run, release] 
+	-s=[solution file] 
+	-p=[project name] 
+	-v 
+	-h 
+	-useMT 
+	-numThreads=[int]
+	
+	
 
 -op ~ This flag for operations and there are currently only
-      2 different states to this flag
+      6 different states to this flag
 
       1. build ~ If this is specified it will build the entire solution
          unless the -p flag is specified
@@ -25,11 +34,8 @@ dsbs -op=[build/clean] -s=[solution file] -p=[project name] -v -h -useMT
          
          a. Linux
          	~ Debian Package
-         	~ Flatpacks
-         	~ Zip Archive
          b. Windows
-         	~ Windows Installer     
-         	~ Zip Archive
+         	~ Windows Installer
 
 -s ~ This flag allows for the user to select a different solution file
      from the current directory. If not used dsbs assumes the solution
@@ -47,10 +53,15 @@ dsbs -op=[build/clean] -s=[solution file] -p=[project name] -v -h -useMT
 
 -useMT ~ This flag will tell the dsbs to use multi threading for compilations and cleaning.
          By default -useMT is false.
+
+-numThreads ~ This flag goes hand and hand with useMT. Basically it allows a given user the ability
+              to change the amount of threads that they can use with dsbs. By default it uses 8 threads.
+              
 DEFAULT Values
 If command is called like so "./dsbs" or "dsbs" if installed on system.
 
 -op=build
 -s=solution.json
 -p=
+-numThreads=8
 

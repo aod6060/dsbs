@@ -2,13 +2,11 @@
 
 
 namespace fe {
-    dsbs::Operation op = dsbs::Operation::OP_BUILD;
-    std::string projectName = "";
-    std::string solutionFile = "solution.json";
+	dsbs::Context context;
 
-    bool isVersion = false;
-    bool isHelp = false;
-    bool useMT = false;
+    	bool isVersion = false;
+    	bool isHelp = false;
+    	bool useMT = false;
 
     int run(int argc, char** argv) {
 
@@ -29,29 +27,31 @@ namespace fe {
 
             if(tags[0] == "-op") {
                 if(tags[1] == "build") {
-                    	op = dsbs::Operation::OP_BUILD;
+                    	context.op = dsbs::Operation::OP_BUILD;
                 } else if(tags[1] == "clean") {
-                    	op = dsbs::Operation::OP_CLEAN;
+                    	context.op = dsbs::Operation::OP_CLEAN;
                 } else if(tags[1] == "rebuild") {
-                	op = dsbs::Operation::OP_REBUILD;
+                	context.op = dsbs::Operation::OP_REBUILD;
                 } else if(tags[1] == "init") {
-                	op = dsbs::Operation::OP_INIT;
+                	context.op = dsbs::Operation::OP_INIT;
                 } else if(tags[1] == "release") {
-                	op = dsbs::Operation::OP_RELEASE;
+                	context.op = dsbs::Operation::OP_RELEASE;
                 } else if(tags[1] == "run") {
-                	op = dsbs::Operation::OP_RUN;
+                	context.op = dsbs::Operation::OP_RUN;
                 }
             
             } else if(tags[0] == "-s") {
-                solutionFile = tags[1];
+                context.solutionFile = tags[1];
             } else if(tags[0] == "-p") {
-                projectName = tags[1];
+                context.projectName = tags[1];
             } else if(tags[0] == "-v") {
                 isVersion = true;
             } else if(tags[0] == "-h") {
                 isHelp = true;
             } else if(tags[0] == "-useMT") {
-		    useMT = true;
+		    context.useMT = true;
+	    } else if(tags[0] == "-numThreads") {
+	    	context.numThreads = std::stoi(tags[1]);
 	    }
         });
 
@@ -72,8 +72,16 @@ namespace fe {
 
             return 0;
         }
-
-
-        return dsbs::run(op, solutionFile, projectName, useMT);
+        
+        //dsbs::Context context;
+        
+        /*
+        context.op = op;
+        context.solutionFile = solutionFile;
+        context.projectName = projectName;
+        context.useMT = useMT;
+        */
+             
+        return dsbs::run(context);
     }
 }

@@ -134,16 +134,27 @@ namespace dsbs {
         void strSplit(std::string str, char delim, std::function<void(std::string)> cb);
         void loadFile(std::string path, std::function<void(std::string)> cb);
     }
-
+    
+    struct Context {
+    	Operation op = Operation::OP_BUILD;
+    	std::string solutionFile = "solution.json";
+    	std::string projectName = "";
+    	bool useMT = false;
+    	int numThreads = 8;
+    };
+    
+    /*
+    	These are the function you'll need to be concerened about if you want to intergrate
+    	dsbs into your application.
+    */
     void initConfig();
 
     std::string getVersion();
-
     int getSolutionFileVersion();
-
     int getProfileFileVersion();
 
-    int run(Operation op, std::string solutionFile, std::string projectName, bool useMT = false);
+    //int run(Operation op, std::string solutionFile, std::string projectName, bool useMT = false);
+    int run(Context& context);
 }
 
 
