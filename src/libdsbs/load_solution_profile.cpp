@@ -119,15 +119,18 @@ namespace dsbs {
 
             };
         }
-        int loadSolutionProfile(Operation op, std::string solutionFile, std::string projectName, bool useMT) {
-
+        
+        
+        //int loadSolutionProfile(Operation op, std::string solutionFile, std::string projectName, bool useMT) {
+        int loadSolutionProfile(Context& context) {
             // Load Solution
             solution::Solution solution;
 
-            ::util::loadStream(solutionFile, loadSolution(solution));
+            ::util::loadStream(context.solutionFile, loadSolution(solution));
 
             //return buildSourceObjectList(op, projectName, solution);
-            return operationsCheck(op, projectName, solution, useMT);
+            //return operationsCheck(context.op, context.projectName, solution, context.useMT);
+            return operationCheck(context, solution);
         }
 
     }

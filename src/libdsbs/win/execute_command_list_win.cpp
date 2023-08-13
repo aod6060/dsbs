@@ -3,33 +3,14 @@
 
 namespace dsbs {
     namespace internal {
-    
-    
     	const static int MAX_THREADS = 8;
     	
     	struct Thread {
     		HANDLE thread_id;
     		std::vector<command::Command> commands;
     	};
-	
-/*
-	void* compileThread(void* data) {
-		//std::cout << "Hello, World" << "\n";
-		
-		Thread* t = (Thread*)data;
-		
-		std::for_each(t->commands.begin(), t->commands.end(), [&](command::Command& command) {
-	    		std::cout << "\t* " << command.command << "\n";
-	    		std::string output = ::util::exec(command.command);
-	    		if(!output.empty()) {
-				std::cout << output << "\n";
-	    		}
-		});
-	}
-*/
+    	
 	DWORD WINAPI compileThread(LPVOID data) {
-		//std::cout << "Hello, World" << "\n";
-		
 		Thread* t = (Thread*)data;
 		
 		std::for_each(t->commands.begin(), t->commands.end(), [&](command::Command& command) {
@@ -41,21 +22,22 @@ namespace dsbs {
 		});
 	}
 	
-        int executeCommandList(std::vector<command::Project>& projectCommandList, bool useMT) {
+        //int executeCommandList(std::vector<command::Project>& projectCommandList, bool useMT) {
+        int executeCommandList(Context& context, std::vector<command::Project>& projectCommandList) {
             std::for_each(projectCommandList.begin(), projectCommandList.end(), [&](command::Project& project) {
                 std::cout << "Building \""<< project.projectName <<"\"..." << "\n";
                 
 		// Execute Commands
-		if(useMT) {
+		if(context.useMT) {
 			//std::cout << "Error: Current windows build can't use -useMT. Will need to figure out a better approach for this." << "\n";
 			
 			
 			std::vector<Thread> threads;
-			threads.resize(MAX_THREADS);
+			threads.resize(context.numThreads);
 			
 			// Setup Data
 			for(int i = 0; i < project.commands.size(); i++) {
-				threads[i % MAX_THREADS].commands.push_back(project.commands[i]);
+				threads[i % numThreads].commands.push_back(project.commands[i]);
 			}
 			
 			for(int i = 0; i < threads.size(); i++) {

@@ -8,27 +8,13 @@ namespace dsbs {
     	// Going to use pthread instead of thread
     	
     	// I'll alow up to 8 threads for now.
-    	const static int MAX_THREADS = 8;
-    	
-    	/*
-	void executeThread(int n, const command::Command& c) {
-                 std::cout << "\t* " << c.command << "\n";
-                 std::string output = ::util::exec(c.command);
-               	 if(!output.empty()) {
-                       	 std::cout << output << "\n";
-		 }
-
-	}
-	*/
-	
+    	//const static int MAX_THREADS = 8;
 	struct Thread {
 		pthread_t thread_id;
 		std::vector<command::Command> commands;
 	};
 	
 	void* compileThread(void* data) {
-		//std::cout << "Hello, World" << "\n";
-		
 		Thread* t = (Thread*)data;
 		
 		std::for_each(t->commands.begin(), t->commands.end(), [&](command::Command& command) {
@@ -40,33 +26,19 @@ namespace dsbs {
 		});
 	}
 	
-        int executeCommandList(std::vector<command::Project>& projectCommandList, bool useMT) {
+        //int executeCommandList(std::vector<command::Project>& projectCommandList, bool useMT) {
+        int executeCommandList(Context& context, std::vector<command::Project>& projectCommandList) {
             std::for_each(projectCommandList.begin(), projectCommandList.end(), [&](command::Project& project) {
                 std::cout << "Building \""<< project.projectName <<"\"..." << "\n";
                 
 		// Execute Commands
-		if(useMT) {
-			/*
-			std::vector<std::thread> threads;
-
-			for(int i = 0; i < project.commands.size(); i++) {
-				threads.push_back(std::thread(executeThread, i, project.commands[i]));
-			}
-
-			for(std::thread& t : threads) {
-				t.join();
-			}
-			*/
-			
-			//std::vector<std::vector<command::Command>> commands;
-			//commands.resize(MAX_THREADS);
-			
+		if(context.useMT) {
 			std::vector<Thread> threads;
-			threads.resize(MAX_THREADS);
+			threads.resize(context.numThreads);
 			
 			for(int i = 0; i < project.commands.size(); i++) {
 				//commands[i % MAX_THREADS].push_back(project.commands[i]);
-				threads[i % MAX_THREADS].commands.push_back(project.commands[i]);
+				threads[i % context.numThreads].commands.push_back(project.commands[i]);
 			}
 			
 			for(int i = 0; i < threads.size(); i++) {
@@ -98,7 +70,7 @@ namespace dsbs {
                 std::cout << "\n";
             });
             
-            if(useMT) {
+            if(context.useMT) {
             	pthread_exit(nullptr);
             }
             

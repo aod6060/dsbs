@@ -312,12 +312,13 @@ namespace dsbs {
 		    projectCommandList.push_back(projectCommand);
 		}
 		
-		int buildOperation(std::string projectName, solution::Solution& solution, bool useMT) {
+		//int buildOperation(std::string projectName, solution::Solution& solution, bool useMT) {
+		int buildOperation(Context& context, solution::Solution& solution) {
 		    std::vector<command::Project> projectCommandList;
 
-		    if(!projectName.empty()) {
+		    if(!context.projectName.empty()) {
 		        std::for_each(solution.projects.begin(), solution.projects.end(), [&](solution::Project& project) {
-		            if(project.name == projectName) {
+		            if(project.name == context.projectName) {
 		                createCommandList(project, projectCommandList);
 		            }
 		        });
@@ -327,7 +328,8 @@ namespace dsbs {
 		        });
 		    }
 
-		    return executeCommandList(projectCommandList, useMT);
+		    //return executeCommandList(projectCommandList, useMT);
+		    return executeCommandList(context, projectCommandList);
 		}
 
 	    }

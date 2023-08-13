@@ -8,35 +8,36 @@
 
 namespace dsbs {
     namespace internal {
-        int loadSolutionProfile(Operation op, std::string solutionFile, std::string projectName, bool useMT);
-        int operationsCheck(Operation op, std::string projectName, solution::Solution& solution, bool useMT);
-        int buildOperation(std::string projectName, solution::Solution& solution, bool useMT);
-        int executeCommandList(std::vector<command::Project>& projectCommandList, bool useMT);
-        int cleanOperation(std::string projectName, solution::Solution& solution, bool useMt);
-
-
+        //int loadSolutionProfile(Operation op, std::string solutionFile, std::string projectName, bool useMT);
+        int loadSolutionProfile(Context& context);
+        
+        //int operationsCheck(Operation op, std::string projectName, solution::Solution& solution, bool useMT);
+        int operationCheck(Context& context, solution::Solution& solution);
+        
+        int executeCommandList(Context& context, std::vector<command::Project>& projectCommandList);
+        
 	namespace init {
-		int initOperation(solution::Solution& solution);
+		int initOperation(Context& context, solution::Solution& solution);
 	}
 
 	namespace build {
-		int buildOperation(std::string projectName, solution::Solution& solution, bool useMT);
+		int buildOperation(Context& context, solution::Solution& solution);
 	}
 
 	namespace rebuild {
-		int rebuildOperation(std::string projectName, solution::Solution& solution, bool useMT);	
+		int rebuildOperation(Context& context, solution::Solution& solution);	
 	}
 
 	namespace clean {
-		int cleanOperation(std::string projectName, solution::Solution& solution, bool useMt);
+		int cleanOperation(Context& context, solution::Solution& solution);
 	}
 
 	namespace release {
-		int releaseOperation(solution::Solution& solution);
+		int releaseOperation(Context& context, solution::Solution& solution);
 	}
 	
 	namespace run {
-		int runOperation(std::string projectName, solution::Solution& solution, bool useMT);
+		int runOperation(Context& context, solution::Solution& solution);
 	}
     }
 }

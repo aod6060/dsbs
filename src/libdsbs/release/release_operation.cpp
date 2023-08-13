@@ -4,7 +4,8 @@
 namespace dsbs {
 	namespace internal {
 		namespace release {
-			int releaseOperation(solution::Solution& solution) {
+			//int releaseOperation(solution::Solution& solution) {
+			int releaseOperation(Context& context, solution::Solution& solution) {
 				// TODO ~ Work on release
 				std::cout << "TODO ~ Work on release" << "\n";
 				return 0;

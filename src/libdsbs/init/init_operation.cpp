@@ -4,7 +4,8 @@
 namespace dsbs {
 	namespace internal {
 		namespace init {
-			int initOperation(solution::Solution& solution) {
+			//int initOperation(solution::Solution& solution) {
+			int initOperation(Context& context, solution::Solution& solution) {
 				// TODO ~ Work on initOperation
 				//std::cout << "TODO ~ Work on initOperation" << "\n";
 				

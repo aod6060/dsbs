@@ -45,12 +45,13 @@ namespace dsbs {
 		    }
 		}
 
-		int cleanOperation(std::string projectName, solution::Solution& solution, bool useMT) {
+		//int cleanOperation(std::string projectName, solution::Solution& solution, bool useMT) {
+		int cleanOperation(Context& context, solution::Solution& solution) {
 		    std::vector<std::filesystem::path> paths;
 
-		    if(!projectName.empty()) {
+		    if(!context.projectName.empty()) {
 		        std::for_each(solution.projects.begin(), solution.projects.end(), [&](solution::Project& project) {
-		            if(projectName == project.name) {
+		            if(context.projectName == project.name) {
 		                handleCleanOperations(project, paths);
 		            }
 		        });
